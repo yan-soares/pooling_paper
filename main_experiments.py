@@ -74,10 +74,15 @@ class SentenceEncoder:
             with torch.no_grad():
                 output = self.model(**batch_tokens)
                 embeddings = self._apply_pooling(output, batch_tokens['attention_mask'])
+                embeddings = embeddings.to('cpu')
                 all_embeddings.append(embeddings)
-        self.size_embedding = embeddings[0].shape   
+            
+            del batch_tokens, output, embeddings
+            torch.cuda.empty_cache()
 
-        return torch.cat(all_embeddings, dim=0).to('cpu').numpy()
+        self.size_embedding = all_embeddings[0].shape   
+
+        return torch.cat(all_embeddings, dim=0).numpy()
    
     def _mean_pooling_exclude_cls_sep(self, output, attention_mask):
  
@@ -297,7 +302,7 @@ class SentenceEncoder:
             name_pooling = self.pooling_strategy.split("_")[0]
             return self._get_pooling_result(hidden_states, attention_mask, name_pooling, self.pooling_strategy.split("_")[-1])
     
-    def _strategies_pooling_list (self, initial_layer_args, poolings_args, agg_layers_args):
+    def _strategies_pooling_list (self, initial_layer_args, final_layer_args, poolings_args, agg_layers_args):
         
         pooling_techniques = functions_code.get_pooling_techniques(poolings_args, agg_layers_args)
         print(f"\nPooling Techniques: {pooling_techniques}")   
@@ -307,11 +312,16 @@ class SentenceEncoder:
         else:
             initial_layer = int(self.qtd_layers / 2)
 
-        pooling_strategies = functions_code.get_pooling_strategies_with_layers(self.qtd_layers, pooling_techniques, initial_layer, agg_layers_args)       
+        if final_layer_args is not None:
+            final_layer = final_layer_args
+        else:
+            final_layer = int(self.qtd_layers)
+
+        pooling_strategies = functions_code.get_pooling_strategies_with_layers(final_layer, pooling_techniques, initial_layer, agg_layers_args)       
         
         return pooling_strategies
 
-def run_senteval(model_name, tasks, epochs, nhid_number, initial_layer_args, poolings_args, agg_layers_args, type_task, batch_args, optim_args, kfold_args):
+def run_senteval(model_name, tasks, epochs, nhid_number, initial_layer_args, final_layer_args, poolings_args, agg_layers_args, type_task, batch_args, optim_args, kfold_args):
 
     results_general = {}
 
@@ -319,7 +329,7 @@ def run_senteval(model_name, tasks, epochs, nhid_number, initial_layer_args, poo
     print(f"\nExecuting Device: {device}")
     
     encoder = SentenceEncoder(model_name, device)
-    pooling_strategies = encoder._strategies_pooling_list(initial_layer_args, poolings_args, agg_layers_args)
+    pooling_strategies = encoder._strategies_pooling_list(initial_layer_args, final_layer_args, poolings_args, agg_layers_args)
     
     for pooling in pooling_strategies:
         encoder.pooling_strategy = pooling
@@ -355,7 +365,7 @@ def run_senteval(model_name, tasks, epochs, nhid_number, initial_layer_args, poo
                 
     return results_general
 
-def tasks_run(models_args, epochs_args, nhid_args, main_path, initial_layer_args, poolings_args, agg_layers_args, filename_task, tasks_list, type_task, batch_args, optim_args, kfold_args):
+def tasks_run(models_args, epochs_args, nhid_args, main_path, initial_layer_args, final_layer_args, poolings_args, agg_layers_args, filename_task, tasks_list, type_task, batch_args, optim_args, kfold_args):
     path_created = main_path + '/' + filename_task
     os.makedirs(path_created, exist_ok=True)
 
@@ -366,11 +376,13 @@ def tasks_run(models_args, epochs_args, nhid_args, main_path, initial_layer_args
     )
 
     results_data = []
+    cont=0
 
     for model_name in models_args:
         print(f"\nExecuting Model: {model_name}")
-        results = run_senteval(model_name, tasks_list, epochs_args, nhid_args, initial_layer_args, poolings_args, agg_layers_args, type_task, batch_args, optim_args, kfold_args)
+        results = run_senteval(model_name, tasks_list, epochs_args, nhid_args, initial_layer_args, final_layer_args, poolings_args, agg_layers_args, type_task, batch_args, optim_args, kfold_args)
         for pooling, res in results.items():
+            cont+=1
             if type_task == 'cl':
                 dict_results = [res.get(task, {}) for task in tasks_list]
             elif type_task == 'si':
@@ -386,10 +398,11 @@ def tasks_run(models_args, epochs_args, nhid_args, main_path, initial_layer_args
                 "qtd_layers": res.get('qtd_layers'),              
                 **{task: dict_results[i] for i, task in enumerate(dict_results)}
             })
-        
-        df1 = pd.DataFrame(results_data)
-        df1.to_csv(path_created + '/' + filename_task + '_intermediate.csv', index=False)
-            
+
+            if cont%22==0:
+                df1 = pd.DataFrame(results_data)
+                df1.to_csv(path_created + '/' + filename_task + '_intermediate.csv', index=False)
+                    
     final_df = pd.DataFrame(results_data)
     final_df.to_csv(path_created + '/' + filename_task + '.csv', index=False)
 
@@ -403,6 +416,7 @@ def main():
     parser.add_argument("--optim", type=str, required=True, help="otimizador do classificador")
     parser.add_argument("--nhid", type=int, required=True, help="Numero de camadas ocultas (0 = Logistic Regression, 1 ou mais = MLP)")
     parser.add_argument("--initial_layer", type=int, help="Camada inicial para execução dos experimentos (default metade superior)")
+    parser.add_argument("--final_layer", type=int, help="Camada inicial para execução dos experimentos (default metade superior)")
     parser.add_argument("--poolings", type=str, required=True, default="all", help="Poolings separados por virgula (sem espacos) ou simple, simple-ns, two, three")
     parser.add_argument("--agg_layers", type=str, required=True, default="ALL", help="agg layers separados por virgula (sem espacos)")
     args = parser.parse_args()
@@ -415,12 +429,14 @@ def main():
     optim_args = args.optim 
     nhid_args = args.nhid
     initial_layer_args = args.initial_layer 
+    final_layer_args = args.final_layer
     poolings_args = args.poolings.split(",")
     agg_layers_args = args.agg_layers.split(",")  
 
     main_path = '../pooling_paper_results/main_experiments_tables'   
 
     initial_layer_args_print = args.initial_layer if args.initial_layer is not None else "default"
+    final_layer_args_print = args.final_layer if args.final_layer is not None else "default"
 
     filename_task = ('_models_' + '&'.join([st for st in models_args]) + 
                      '_epochs_' + str(epochs_args) + 
@@ -429,6 +445,7 @@ def main():
                      '_optim_' + str(optim_args) +
                      '_nhid_' + str(nhid_args) + 
                      '_initiallayer_' + str(initial_layer_args_print) + 
+                     '_finallayer_' + str(final_layer_args_print) +
                      '_pooling_' + '&'.join([st for st in poolings_args]) + 
                      '_agglayers_' + '&'.join([st for st in agg_layers_args])
                      )
@@ -436,12 +453,12 @@ def main():
     if task_type_args == "classification":      
         filename_cl = "cl" + filename_task
         classification_tasks = ['MR', 'CR', 'SUBJ', 'MPQA', 'SST2', 'TREC', 'MRPC']        
-        tasks_run(models_args, epochs_args, nhid_args, main_path, initial_layer_args, poolings_args, agg_layers_args, filename_cl, classification_tasks, 'cl', batch_args, optim_args, kfold_args)
+        tasks_run(models_args, epochs_args, nhid_args, main_path, initial_layer_args, final_layer_args, poolings_args, agg_layers_args, filename_cl, classification_tasks, 'cl', batch_args, optim_args, kfold_args)
 
     elif task_type_args == "similarity":
         filename_si = "si" + filename_task
         similarity_tasks = ['STS12', 'STS13', 'STS14', 'STS15', 'STS16', 'STSBenchmark', 'SICKRelatedness']
-        tasks_run(models_args, epochs_args, nhid_args, main_path, initial_layer_args, poolings_args, agg_layers_args, filename_si, similarity_tasks, 'si', batch_args, optim_args, kfold_args)
+        tasks_run(models_args, epochs_args, nhid_args, main_path, initial_layer_args, final_layer_args, poolings_args, agg_layers_args, filename_si, similarity_tasks, 'si', batch_args, optim_args, kfold_args)
 
 if __name__ == "__main__":
     main()
