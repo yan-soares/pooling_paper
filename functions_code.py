@@ -1,0 +1,112 @@
+import torch
+
+def get_pooling_techniques(poolings_args, agg_layers_args):
+    
+    simple_poolings = ['CLS', 'AVG', 'SUM', 'MAX']
+    simple_ns_poolings = ['AVG-NS', 'SUM-NS', 'MAX-NS']
+    two_tokens_poolings = ['CLS+AVG', 'CLS+SUM', 'CLS+MAX', 'CLS+AVG-NS', 'CLS+SUM-NS', 'CLS+MAX-NS']
+    three_tokens_poolings = ['CLS+AVG+AVG-NS', 'CLS+AVG+SUM-NS', 'CLS+AVG+MAX-NS', 
+                            'CLS+SUM+AVG-NS', 'CLS+SUM+SUM-NS', 'CLS+SUM+MAX-NS', 
+                            'CLS+MAX+AVG-NS', 'CLS+MAX+SUM-NS', 'CLS+MAX+MAX-NS']
+    pooling_prefixs = []
+
+    if agg_layers_args[0] == 'BEST':
+        pooling_prefixs = two_tokens_poolings + three_tokens_poolings
+        return pooling_prefixs
+    
+    if poolings_args[0] == 'all':
+        pooling_prefixs = simple_poolings + simple_ns_poolings + two_tokens_poolings + three_tokens_poolings
+        return pooling_prefixs
+    
+    if 'simple' in poolings_args:
+        pooling_prefixs += simple_poolings
+    if 'simple-ns' in poolings_args:
+        pooling_prefixs += simple_ns_poolings
+    if 'two' in poolings_args:
+        pooling_prefixs += two_tokens_poolings
+    if 'three' in poolings_args:
+        pooling_prefixs += three_tokens_poolings  
+    else:
+        pooling_prefixs += poolings_args
+
+    return pooling_prefixs      
+
+def get_pooling_strategies_with_layers(qtd_layers, pooling_techniques, initial_layer, agg_layers_args):
+
+    #ONE LAYER STRATEGIES
+    LYR = []
+    for i in range(initial_layer, qtd_layers):
+        for p in pooling_techniques:
+            LYR.append(p + f"_LYR-{i+1}")
+    
+    #AGGREGATE LAYERS STRATEGIES
+    SUML4L = []
+    AVGL4L = []
+    SUML6L = []
+    AVGL6L = []
+    SUML4BL = []
+    AVGL4BL = []
+    SUMALL = []
+    AVGALL = []
+    BEST = []
+    for p in pooling_techniques:
+        SUML4L.append(p + f"_SUML4L") 
+        AVGL4L.append(p + f"_AVGL4L") 
+        SUML6L.append(p + f"_SUML6L") 
+        AVGL6L.append(p + f"_AVGL6L") 
+        SUML4BL.append(p + f"_SUML4BL")
+        AVGL4BL.append(p + f"_AVGL4BL") 
+        SUMALL.append(p + f"_SUMALL")
+        AVGALL.append(p + f"_AVGALL") 
+        BEST.append(p + f"_BEST") 
+
+    ####GET POOLINGS + LAYERS        
+    if agg_layers_args[0] == 'ALL':
+        print('ALL LAYERS + AGGLAYERS')
+        return LYR + SUML4L + AVGL4L + SUML6L + AVGL6L + SUML4BL + AVGL4BL + SUMALL + AVGALL
+    if agg_layers_args[0] == 'AGGLAYERS':
+        print('AGGLAYERS')
+        return SUML4L + AVGL4L + SUML6L + AVGL6L + SUML4BL + AVGL4BL + SUMALL + AVGALL
+    if agg_layers_args[0] == 'BEST':
+        print('BEST AGG LAYERS')
+        return BEST
+    
+    pooling_strategies_with_layers = []
+
+    if 'LYR' in agg_layers_args:
+        pooling_strategies_with_layers += LYR
+        print('LYR AGG LAYERS')
+    if 'SUML4L' in agg_layers_args:
+        pooling_strategies_with_layers += SUML4L
+        print('SUML4L AGG LAYERS')
+    if 'AVGL4L' in agg_layers_args:
+        pooling_strategies_with_layers += AVGL4L
+        print('AVGL4L AGG LAYERS')
+    if 'SUML6L' in agg_layers_args:
+        pooling_strategies_with_layers += SUML6L
+        print('SUML6L AGG LAYERS')
+    if 'AVGL6L' in agg_layers_args:
+        pooling_strategies_with_layers += AVGL6L
+        print('AVGL6L AGG LAYERS')
+    if 'SUML4BL' in agg_layers_args:
+        pooling_strategies_with_layers += SUML4BL
+        print('SUML4BL AGG LAYERS')
+    if 'AVGL4BL' in agg_layers_args:
+        pooling_strategies_with_layers += AVGL4BL        
+        print('AVGL4BL AGG LAYERS')
+    if 'SUMALL' in agg_layers_args:
+        pooling_strategies_with_layers += SUMALL
+        print('SUMALL AGG LAYERS')
+    if 'AVGALL' in agg_layers_args:
+        pooling_strategies_with_layers += AVGALL  
+        print('AVGALL AGG LAYERS')
+    
+    return pooling_strategies_with_layers
+
+def get_device():
+    return torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
+
+def batcher(params, batch):
+    sentences = [' '.join(sent) for sent in batch]
+    return params['encoder']._encode(sentences)
+
