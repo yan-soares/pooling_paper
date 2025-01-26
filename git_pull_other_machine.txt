@@ -1,4 +1,0 @@
-git clone https://github.com/yan-soares/pooling_paper.git
-git rm -r --cached general_results
-echo "general_results/" >> .git/info/exclude
-git pull --no-rebase

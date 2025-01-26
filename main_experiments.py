@@ -418,7 +418,7 @@ def main():
     poolings_args = args.poolings.split(",")
     agg_layers_args = args.agg_layers.split(",")  
 
-    main_path = 'general_results/main_experiments_tables'   
+    main_path = '../pooling_paper_results/main_experiments_tables'   
 
     initial_layer_args_print = args.initial_layer if args.initial_layer is not None else "default"
 
