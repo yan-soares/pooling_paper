@@ -7,6 +7,10 @@ import logging
 import os
 import functions_code
 from datetime import datetime
+from torch.cuda.amp import autocast
+
+torch.backends.cudnn.benchmark = True
+torch.backends.cudnn.deterministic = False
 
 class SentenceEncoder:
     def __init__(self, model_name, device):
@@ -61,7 +65,7 @@ class SentenceEncoder:
             self.tokenizer = AutoTokenizer.from_pretrained(self.name_model)
             self.model = AutoModel.from_pretrained(self.name_model, output_hidden_states=True).to(self.device)
           
-    def _encode(self, sentences, batch_size=1024): 
+    def _encode(self, sentences, batch_size=2048): 
         tokens = self.tokenizer(
             sentences, padding="longest", truncation=True, return_tensors="pt", max_length = self.model.config.max_position_embeddings
         )
@@ -71,18 +75,20 @@ class SentenceEncoder:
         all_embeddings = []
         for i in range(0, len(sentences), batch_size):
             batch_tokens = {key: val[i:i+batch_size] for key, val in tokens.items()}
-            with torch.no_grad():
+            with torch.no_grad(), autocast():
                 output = self.model(**batch_tokens)
                 embeddings = self._apply_pooling(output, batch_tokens['attention_mask'])
-                embeddings = embeddings.to('cpu')
-                all_embeddings.append(embeddings)
-            
-            del batch_tokens, output, embeddings
-            torch.cuda.empty_cache()
+
+                del batch_tokens, output
+                torch.cuda.empty_cache()
+
+                all_embeddings.append(embeddings)           
 
         self.size_embedding = all_embeddings[0].shape   
 
-        return torch.cat(all_embeddings, dim=0).numpy()
+        final_embeddings = torch.cat(all_embeddings, dim=0).to('cpu').numpy()
+        return final_embeddings
+        #return torch.cat(all_embeddings, dim=0).to('cpu').numpy()
    
     def _mean_pooling_exclude_cls_sep(self, output, attention_mask):
  
