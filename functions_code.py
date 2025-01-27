@@ -33,9 +33,13 @@ def get_pooling_techniques(poolings_args, agg_layers_args):
 
 def get_pooling_strategies_with_layers(qtd_layers, pooling_techniques, initial_layer, agg_layers_args):
 
+    temp_lyr = []
+    lyrs = []
+
     #ONE LAYER STRATEGIES
     LYR = []
     for i in range(initial_layer, qtd_layers):
+        temp_lyr.append(f"LYR-{i+1}")
         for p in pooling_techniques:
             LYR.append(p + f"_LYR-{i+1}")
     
@@ -62,47 +66,45 @@ def get_pooling_strategies_with_layers(qtd_layers, pooling_techniques, initial_l
 
     ####GET POOLINGS + LAYERS        
     if agg_layers_args[0] == 'ALL':
-        print('ALL LAYERS + AGGLAYERS')
-        return LYR + SUML4L + AVGL4L + SUML6L + AVGL6L + SUML4BL + AVGL4BL + SUMALL + AVGALL
+        lyrs = temp_lyr + ["SUML4L"] + ["AVGL4L"] + ["SUML6L" ]+ ["AVGL6L"] + ["SUML4BL"] + ["AVGL4BL"] + ["SUMALL"] + ["AVGALL"]
+        return LYR + SUML4L + AVGL4L + SUML6L + AVGL6L + SUML4BL + AVGL4BL + SUMALL + AVGALL, lyrs
     if agg_layers_args[0] == 'AGGLAYERS':
-        print('AGGLAYERS')
-        return SUML4L + AVGL4L + SUML6L + AVGL6L + SUML4BL + AVGL4BL + SUMALL + AVGALL
+        lyrs = ["SUML4L"] + ["AVGL4L"] + ["SUML6L" ]+ ["AVGL6L"] + ["SUML4BL"] + ["AVGL4BL"] + ["SUMALL"] + ["AVGALL"]
+        return SUML4L + AVGL4L + SUML6L + AVGL6L + SUML4BL + AVGL4BL + SUMALL + AVGALL, lyrs
     if agg_layers_args[0] == 'BEST':
-        print('BEST AGG LAYERS')
-        return BEST
+        return BEST, ["BEST"]
     
     pooling_strategies_with_layers = []
 
     if 'LYR' in agg_layers_args:
         pooling_strategies_with_layers += LYR
-        print('LYR AGG LAYERS')
-        print(initial_layer, qtd_layers)
+        lyrs += temp_lyr
     if 'SUML4L' in agg_layers_args:
         pooling_strategies_with_layers += SUML4L
-        print('SUML4L AGG LAYERS')
+        lyrs += ["SUML4L"]
     if 'AVGL4L' in agg_layers_args:
         pooling_strategies_with_layers += AVGL4L
-        print('AVGL4L AGG LAYERS')
+        lyrs += ["AVGL4L"]
     if 'SUML6L' in agg_layers_args:
         pooling_strategies_with_layers += SUML6L
-        print('SUML6L AGG LAYERS')
+        lyrs += ["SUML6L"]
     if 'AVGL6L' in agg_layers_args:
         pooling_strategies_with_layers += AVGL6L
-        print('AVGL6L AGG LAYERS')
+        lyrs += ["AVGL6L"]
     if 'SUML4BL' in agg_layers_args:
         pooling_strategies_with_layers += SUML4BL
-        print('SUML4BL AGG LAYERS')
+        lyrs += ["SUML4BL"]
     if 'AVGL4BL' in agg_layers_args:
-        pooling_strategies_with_layers += AVGL4BL        
-        print('AVGL4BL AGG LAYERS')
+        pooling_strategies_with_layers += AVGL4BL
+        lyrs += ["AVGL4BL"]      
     if 'SUMALL' in agg_layers_args:
         pooling_strategies_with_layers += SUMALL
-        print('SUMALL AGG LAYERS')
+        lyrs += ["SUMALL"] 
     if 'AVGALL' in agg_layers_args:
         pooling_strategies_with_layers += AVGALL  
-        print('AVGALL AGG LAYERS')
+        lyrs += ["AVGALL"] 
     
-    return pooling_strategies_with_layers
+    return pooling_strategies_with_layers, lyrs
 
 def get_device():
     return torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
@@ -110,4 +112,8 @@ def get_device():
 def batcher(params, batch):
     sentences = [' '.join(sent) for sent in batch]
     return params['encoder']._encode(sentences)
+
+def batcher_generate_all(params, batch):
+    sentences = [' '.join(sent) for sent in batch]
+    return params['encoder']._encode_generate_all(sentences, params.current_task)
 

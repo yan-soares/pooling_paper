@@ -67,7 +67,7 @@ class SentenceEncoder:
             self.qtd_layers = 12
             self.tokenizer = AutoTokenizer.from_pretrained(self.name_model)
             self.model = AutoModel.from_pretrained(self.name_model, output_hidden_states=True).to(self.device)
-          
+
     def _encode(self, sentences, batch_size=2048): 
         tokens = self.tokenizer(
             sentences, padding="longest", truncation=True, return_tensors="pt", max_length = self.model.config.max_position_embeddings
@@ -91,6 +91,7 @@ class SentenceEncoder:
 
         final_embeddings = torch.cat(all_embeddings, dim=0).to('cpu').numpy()
         return final_embeddings
+        #return torch.cat(all_embeddings, dim=0).to('cpu').numpy()
    
     def _mean_pooling_exclude_cls_sep(self, output, attention_mask):
  
@@ -256,7 +257,7 @@ class SentenceEncoder:
             
             case "CLS+MAX+MAX-NS":
                 return torch.cat((cls_result, max_result, max_ns_result), dim=1)
-                                                         
+            
     def _apply_pooling(self, output, attention_mask):
         hidden_states = output.hidden_states
 
@@ -309,10 +310,173 @@ class SentenceEncoder:
         if self.pooling_strategy.split("_")[-1] == "BEST":
             name_pooling = self.pooling_strategy.split("_")[0]
             return self._get_pooling_result(hidden_states, attention_mask, name_pooling, self.pooling_strategy.split("_")[-1])
-    
+        
+    def _encode_generate_all(self, sentences, current_task, batch_size=2048): 
+        
+        print("CURRENT TASK: ", current_task)
+        tokens = self.tokenizer(
+            sentences, padding="longest", truncation=True, return_tensors="pt", max_length = self.model.config.max_position_embeddings
+        )
+
+        tokens = {key: val.to(self.device) for key, val in tokens.items()}
+
+        for i in range(0, len(sentences), batch_size):
+            batch_tokens = {key: val[i:i+batch_size] for key, val in tokens.items()}
+            with torch.no_grad(), torch.amp.autocast('cuda'):
+                output = self.model(**batch_tokens)
+                self._apply_pooling_generate_all(output, batch_tokens['attention_mask'], current_task)
+
+                del batch_tokens, output
+                torch.cuda.empty_cache()     
+
+        #self.size_embedding = all_embeddings[0].shape   
+
+        final_embeddings = torch.cat(all_embeddings, dim=0).to('cpu').numpy()
+        return final_embeddings
+          
+    def _get_pooling_result_generate_all(self, hidden_state, attention_mask, task):
+
+        cls_result = hidden_state[:, 0, :]
+        avg_result = ((hidden_state * attention_mask.unsqueeze(-1)).sum(1) / attention_mask.sum(-1).unsqueeze(-1).clamp(min=1e-9))
+        sum_result = (hidden_state * attention_mask.unsqueeze(-1)).sum(dim=1)
+        max_result = torch.max(hidden_state.masked_fill(attention_mask.unsqueeze(-1).expand(hidden_state.size()).float() == 0, -1e9), dim=1)[0]
+        avg_ns_result = self._mean_pooling_exclude_cls_sep(hidden_state, attention_mask)
+        sum_ns_result = self._sum_pooling_exclude_cls_sep(hidden_state, attention_mask)
+        max_ns_result = self._max_pooling_exclude_cls_sep(hidden_state, attention_mask)
+
+        final_embeddings = torch.cat(all_embeddings, dim=0).to('cpu').numpy()
+        all_embeddings.append(embeddings) 
+
+        for poll in self.list_poolings:        
+
+            match poll:
+
+                case "CLS":
+
+                    if isinstance(self.general_embeddings[task][self.actual_layer].get("CLS"), list):
+                        self.general_embeddings[task][self.actual_layer]["CLS"].append(cls_result)
+                    else:
+                        self.general_embeddings[task][self.actual_layer]["CLS"] = cls_result
+                
+                case "AVG":
+
+                    if isinstance(self.general_embeddings[task][self.actual_layer].get("AVG"), list):
+                        self.general_embeddings[task][self.actual_layer]["AVG"] += avg_result
+                    else:
+                        self.general_embeddings[task][self.actual_layer]["AVG"] = avg_result 
+
+                case "SUM":
+                    
+                    if isinstance(self.general_embeddings[task][self.actual_layer].get("SUM"), list):
+                        self.general_embeddings[task][self.actual_layer]["SUM"] += sum_result
+                    else:
+                        self.general_embeddings[task][self.actual_layer]["SUM"] = sum_result 
+                                       
+                
+                case "MAX":
+                    return max_result
+                
+                case "AVG-NS":
+                    return avg_ns_result
+                
+                case "SUM-NS":
+                    return sum_ns_result
+                
+                case "MAX-NS":
+                    return max_ns_result
+                                        
+                case "CLS+AVG":
+                    return torch.cat((cls_result, avg_result), dim=1)
+                
+                case "CLS+SUM":
+                    return torch.cat((cls_result, sum_result), dim=1)
+                
+                case "CLS+MAX":
+                    return torch.cat((cls_result, max_result), dim=1)
+                            
+                case "CLS+AVG-NS":
+                    return torch.cat((cls_result, avg_ns_result), dim=1)
+                
+                case "CLS+SUM-NS":
+                    return torch.cat((cls_result, sum_ns_result), dim=1)
+                
+                case "CLS+MAX-NS":
+                    return torch.cat((cls_result, max_ns_result), dim=1)
+
+                case "CLS+AVG+AVG-NS":
+                    return torch.cat((cls_result, avg_result, avg_ns_result), dim=1)
+                
+                case "CLS+AVG+SUM-NS":
+                    return torch.cat((cls_result, avg_result, sum_ns_result), dim=1)
+                
+                case "CLS+AVG+MAX-NS":
+                    return torch.cat((cls_result, avg_result, max_ns_result), dim=1)
+                            
+                case "CLS+SUM+AVG-NS":
+                    return torch.cat((cls_result, sum_result, avg_ns_result), dim=1)
+                
+                case "CLS+SUM+SUM-NS":
+                    return torch.cat((cls_result, sum_result, sum_ns_result), dim=1)
+                
+                case "CLS+SUM+MAX-NS":
+                    return torch.cat((cls_result, sum_result, max_ns_result), dim=1)
+                
+                case "CLS+MAX+AVG-NS":
+                    return torch.cat((cls_result, max_result, avg_ns_result), dim=1)
+                
+                case "CLS+MAX+SUM-NS":
+                    return torch.cat((cls_result, max_result, sum_ns_result), dim=1)
+                
+                case "CLS+MAX+MAX-NS":
+                    return torch.cat((cls_result, max_result, max_ns_result), dim=1)
+
+    def _apply_pooling_generate_all(self, output, attention_mask):
+        hidden_states = output.hidden_states
+        self.actual_layer
+        
+        if self.actual_layer.split("_")[0] == "LYR":
+            layer_idx = int(self.actual_layer.split("_")[1])   
+            LYR_hidden =  hidden_states[layer_idx]            
+            return self._get_pooling_result_generate_all(LYR_hidden, attention_mask)
+        
+        if self.actual_layer == "SUML4L":
+            SUML4L_hidden = torch.stack(hidden_states[-4:], dim=0).sum(dim=0)      
+            return self._get_pooling_result_generate_all(SUML4L_hidden, attention_mask)
+        
+        if self.actual_layer == "AVGL4L":
+            AVGL4L_hidden = torch.stack(hidden_states[-4:], dim=0).mean(dim=0)      
+            return self._get_pooling_result_generate_all(AVGL4L_hidden, attention_mask)
+        
+        if self.actual_layer == "SUML6L":
+            SUML6L_hidden = torch.stack(hidden_states[-6:], dim=0).sum(dim=0)      
+            return self._get_pooling_result_generate_all(SUML6L_hidden, attention_mask)
+        
+        if self.actual_layer == "AVGL6L":
+            AVGL6L_hidden = torch.stack(hidden_states[-6:], dim=0).mean(dim=0)      
+            return self._get_pooling_result_generate_all(AVGL6L_hidden, attention_mask)
+        
+        if self.actual_layer == "SUML4BL":
+            SUML4BL_hidden = torch.stack(hidden_states[-5:-1], dim=0).sum(dim=0)      
+            return self._get_pooling_result_generate_all(SUML4BL_hidden, attention_mask)
+        
+        if self.actual_layer == "AVGL4BL":
+            AVGL4BL_hidden = torch.stack(hidden_states[-5:-1], dim=0).mean(dim=0)      
+            return self._get_pooling_result_generate_all(AVGL4BL_hidden, attention_mask)
+        
+        if self.actual_layer == "SUMALL":
+            SUMALL_hidden = torch.stack(hidden_states[1:], dim=0).sum(dim=0)          
+            return self._get_pooling_result_generate_all(SUMALL_hidden, attention_mask)
+        
+        if self.actual_layer == "AVGALL":
+            AVGALL_hidden = torch.stack(hidden_states[1:], dim=0).mean(dim=0)            
+            return self._get_pooling_result_generate_all(AVGALL_hidden, attention_mask)
+                
+        if self.actual_layer == "BEST":
+            return self._get_pooling_result_generate_all(hidden_states, attention_mask)
+                              
     def _strategies_pooling_list (self, initial_layer_args, final_layer_args, poolings_args, agg_layers_args):
         
-        pooling_techniques = functions_code.get_pooling_techniques(poolings_args, agg_layers_args)
+        pooling_techniques = functions_code.get_pooling_techniques(poolings_args, agg_layers_args) 
                 
         if initial_layer_args is not None:
             initial_layer = initial_layer_args
@@ -341,7 +505,22 @@ def run_senteval(model_name, tasks, epochs, nhid_number, initial_layer_args, fin
     #GET ALL EMBEDDINGS
     print("LISTA DE POOLINGS: ", list_poolings)
     print("LISTA DE LAYERS: ", list_layers)
+
+    encoder.list_poolings = list_poolings
+    encoder.list_layers = list_layers
     
+    for l in list_layers:
+        encoder.actual_layer = l
+        senteval_params = {
+                'task_path': 'data',
+                'usepytorch': True,
+                'kfold': 1,
+                'encoder': encoder
+            }
+        se = senteval.engine.SE(senteval_params, functions_code.batcher_generate_all)
+        se.eval(tasks)
+    
+    #GET RESULTS
     for pooling in pooling_strategies:
         encoder.pooling_strategy = pooling
         print(f"Running: Model={encoder.name_model}, Pooling={encoder.pooling_strategy}")
@@ -387,11 +566,13 @@ def tasks_run(models_args, epochs_args, nhid_args, main_path, initial_layer_args
     )
 
     results_data = []
+    cont=0
 
     for model_name in models_args:
         print(f"\nExecuting Model: {model_name}")
         results = run_senteval(model_name, tasks_list, epochs_args, nhid_args, initial_layer_args, final_layer_args, poolings_args, agg_layers_args, type_task, batch_args, optim_args, kfold_args)
         for pooling, res in results.items():
+            cont+=1
             if type_task == 'cl':
                 dict_results = [res.get(task, {}) for task in tasks_list]
             elif type_task == 'si':
@@ -405,11 +586,12 @@ def tasks_run(models_args, epochs_args, nhid_args, main_path, initial_layer_args
                 "epochs": epochs_args,
                 "nhid": nhid_args,
                 "qtd_layers": res.get('qtd_layers'),              
-                **{task: dict_results[i] for i, task in enumerate(tasks_list)}
+                **{task: dict_results[i] for i, task in enumerate(dict_results)}
             })
-        
-        final_df1 = pd.DataFrame(results_data)
-        final_df1.to_csv(path_created + '/' + filename_task + '_intermediate.csv', index=False)
+
+            if cont%22==0:
+                df1 = pd.DataFrame(results_data)
+                df1.to_csv(path_created + '/' + filename_task + '_intermediate.csv', index=False)
                     
     final_df = pd.DataFrame(results_data)
     final_df.to_csv(path_created + '/' + filename_task + '.csv', index=False)
