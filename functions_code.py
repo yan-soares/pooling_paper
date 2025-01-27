@@ -76,6 +76,7 @@ def get_pooling_strategies_with_layers(qtd_layers, pooling_techniques, initial_l
     if 'LYR' in agg_layers_args:
         pooling_strategies_with_layers += LYR
         print('LYR AGG LAYERS')
+        print(initial_layer, qtd_layers)
     if 'SUML4L' in agg_layers_args:
         pooling_strategies_with_layers += SUML4L
         print('SUML4L AGG LAYERS')
