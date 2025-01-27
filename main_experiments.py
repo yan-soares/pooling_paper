@@ -6,8 +6,6 @@ import pandas as pd
 import logging
 import os
 import functions_code
-from datetime import datetime
-from torch.cuda.amp import autocast
 
 torch.backends.cudnn.benchmark = True
 torch.backends.cudnn.deterministic = False
@@ -75,7 +73,7 @@ class SentenceEncoder:
         all_embeddings = []
         for i in range(0, len(sentences), batch_size):
             batch_tokens = {key: val[i:i+batch_size] for key, val in tokens.items()}
-            with torch.no_grad(), autocast():
+            with torch.no_grad(), torch.amp.autocast('cuda'):
                 output = self.model(**batch_tokens)
                 embeddings = self._apply_pooling(output, batch_tokens['attention_mask'])
 
