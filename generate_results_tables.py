@@ -4,7 +4,8 @@ import os
 import shutil
 
 MAIN_PATH = "../pooling_paper_results/main_experiments_tables"
-FINAL_RESULTS_PATH = '../pooling_paper_results/tables_final_results'
+FINAL_RESULTS_PATH_CL = '../pooling_paper_results/tables_final_results/CL'
+FINAL_RESULTS_PATH_SI = '../pooling_paper_results/tables_final_results/SI'
 
 cl_paths = [p for p in os.listdir(MAIN_PATH) if p.startswith('cl_')]
 si_paths = [p for p in os.listdir(MAIN_PATH) if p.startswith('si_')]
@@ -12,7 +13,7 @@ si_paths = [p for p in os.listdir(MAIN_PATH) if p.startswith('si_')]
 columns_tasks_cl = ['MR', 'CR', 'SUBJ', 'MPQA', 'SST2', 'TREC', 'MRPC']
 columns_tasks_si = ['STS12', 'STS13', 'STS14', 'STS15', 'STS16', 'STSBenchmark', 'SICKRelatedness']
 
-main_colunas = ['model', 'pooling', 'agg', 'layer', 'epochs', 'out_vec_size', 'qtd_layers', 'nhid', 'params', 'best_layers']
+main_colunas = ['model', 'pooling', 'type_pooling','agg', 'layer', 'epochs', 'out_vec_size', 'qtd_layers', 'nhid', 'params', 'best_layers']
 
 ordem_colunas_cl = main_colunas + columns_tasks_cl 
 ordem_colunas_si = main_colunas + columns_tasks_si 
@@ -35,6 +36,25 @@ def parse_dict_with_eval(value):
         return {}
     except Exception as e:
         return {}
+    
+def get_type_pooling(pooling_str):
+    simple_poolings = ['CLS', 'AVG', 'SUM', 'MAX']
+    simple_ns_poolings = ['AVG-NS', 'SUM-NS', 'MAX-NS']
+    two_tokens_poolings = ['CLS+AVG', 'CLS+SUM', 'CLS+MAX', 'CLS+AVG-NS', 'CLS+SUM-NS', 'CLS+MAX-NS']
+    three_tokens_poolings = ['CLS+AVG+AVG-NS', 'CLS+AVG+SUM-NS', 'CLS+AVG+MAX-NS', 
+                            'CLS+SUM+AVG-NS', 'CLS+SUM+SUM-NS', 'CLS+SUM+MAX-NS', 
+                            'CLS+MAX+AVG-NS', 'CLS+MAX+SUM-NS', 'CLS+MAX+MAX-NS']
+    
+    if pooling_str in simple_poolings:
+        return "simple"
+    if pooling_str in simple_ns_poolings:
+        return "simple-ns"
+    if pooling_str in two_tokens_poolings:
+        return "two-tokens"
+    if pooling_str in three_tokens_poolings:
+        return "three-tokens"
+    else:
+        return "not categorized"
 
 def tables_classification(cl_paths, columns_tasks_cl, ordem_colunas_cl):
     for clp in cl_paths:
@@ -68,6 +88,9 @@ def tables_classification(cl_paths, columns_tasks_cl, ordem_colunas_cl):
         devacc_table['params'] = "-".join(cl_file_name.split('_')[5:11])
         acc_table['params'] = "-".join(cl_file_name.split('_')[5:11])
 
+        devacc_table['type_pooling'] = devacc_table['agg'].apply(get_type_pooling)
+        acc_table['type_pooling'] = acc_table['agg'].apply(get_type_pooling)
+
         devacc_table = devacc_table[ordem_colunas_cl]
         acc_table = acc_table[ordem_colunas_cl]  
 
@@ -80,7 +103,7 @@ def tables_classification(cl_paths, columns_tasks_cl, ordem_colunas_cl):
         os.makedirs(MAIN_PATH + '/processados/' + clp, exist_ok=True)
         shutil.copy(caminho_arquivo_cl, MAIN_PATH + '/processados/' + clp)
         #shutil.move(MAIN_PATH + '/' + clp, FINAL_RESULTS_PATH + '/' + clp)
-        move_with_replace(MAIN_PATH + '/' + clp, FINAL_RESULTS_PATH + '/' + clp)
+        move_with_replace(MAIN_PATH + '/' + clp, FINAL_RESULTS_PATH_CL + '/' + clp)
 
 def tables_similarity(si_paths, columns_tasks_si, ordem_colunas_si):
    for slp in si_paths:
@@ -114,6 +137,9 @@ def tables_similarity(si_paths, columns_tasks_si, ordem_colunas_si):
         pearson_table['params'] = "-".join(si_file_name.split('_')[5:11])
         spearman_table['params'] = "-".join(si_file_name.split('_')[5:11])
 
+        pearson_table['type_pooling'] = pearson_table['agg'].apply(get_type_pooling)
+        spearman_table['type_pooling'] = spearman_table['agg'].apply(get_type_pooling)
+
         pearson_table = pearson_table[ordem_colunas_si]
         spearman_table = spearman_table[ordem_colunas_si]  
 
@@ -126,7 +152,7 @@ def tables_similarity(si_paths, columns_tasks_si, ordem_colunas_si):
         os.makedirs(MAIN_PATH + '/processados/' + slp, exist_ok=True)
         shutil.copy(caminho_arquivo_si, MAIN_PATH + '/processados/' + slp)
         #shutil.move(MAIN_PATH + '/' + slp, FINAL_RESULTS_PATH + '/' + slp)
-        move_with_replace(MAIN_PATH + '/' + slp, FINAL_RESULTS_PATH + '/' + slp)
+        move_with_replace(MAIN_PATH + '/' + slp, FINAL_RESULTS_PATH_SI + '/' + slp)
 
 def main():
     parser = argparse.ArgumentParser(description="SentEval Experiments")

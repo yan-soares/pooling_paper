@@ -1,23 +1,44 @@
 import pandas as pd
 import math
+import os
+import shutil
 
-main_path = "../pooling_paper_results/google_drive_results"
 main_path_base = "../pooling_paper_results/google_drive_results/base"
 main_path_large = "../pooling_paper_results/google_drive_results/large"
 
+cl_main_path = "../pooling_paper_results/tables_final_results/CL"
+destino_cl_acc = "../pooling_paper_results/FILES/cl_all_acc_files"
+destino_cl_devacc = "../pooling_paper_results/FILES/cl_all_devacc_files"
+
+os.makedirs(destino_cl_acc, exist_ok=True)
+os.makedirs(destino_cl_devacc, exist_ok=True)
+
+# Percorrer todas as subpastas
+for root, dirs, files in os.walk(cl_main_path):
+    # Verificar se está na pasta "acc"
+    if os.path.basename(root) == "cl_acc":
+        for file in files:
+            caminho_origem = os.path.join(root, file)
+            shutil.copy(caminho_origem, destino_cl_acc)
+            #print(f"Copiado: {caminho_origem} para {destino_cl_acc}")
+
+    # Verificar se está na pasta "dev"
+    elif os.path.basename(root) == "cl_devacc":
+        for file in files:
+            caminho_origem = os.path.join(root, file)
+            shutil.copy(caminho_origem, destino_cl_devacc)
+            #print(f"Copiado: {caminho_origem} para {destino_cl_devacc}")
+
+#print("Arquivos copiados com sucesso!")
+
+
 #####FILES BASE
-files_base_acc = [
-    "/home/yandellwsl/pooling_paper_results/tables_final_results/cl_models_allmpnet_epochs_1_batch_1024_kfold_10_optim_adam_nhid_0_initiallayer_default_finallayer_default_pooling_all_agglayers_AGGLAYERS/cl_acc/cl_models_allmpnet_epochs_1_batch_1024_kfold_10_optim_adam_nhid_0_initiallayer_default_finallayer_default_pooling_all_agglayers_AGGLAYERS_processado_acc.csv",
-    "/home/yandellwsl/pooling_paper_results/tables_final_results/cl_models_deberta-base_epochs_1_batch_1024_kfold_10_optim_adam_nhid_0_initiallayer_default_finallayer_default_pooling_all_agglayers_AGGLAYERS/cl_acc/cl_models_deberta-base_epochs_1_batch_1024_kfold_10_optim_adam_nhid_0_initiallayer_default_finallayer_default_pooling_all_agglayers_AGGLAYERS_processado_acc.csv"
-]
-files_base_devacc = [
-    "/home/yandellwsl/pooling_paper_results/tables_final_results/cl_models_allmpnet_epochs_1_batch_1024_kfold_10_optim_adam_nhid_0_initiallayer_default_finallayer_default_pooling_all_agglayers_AGGLAYERS/cl_devacc/cl_models_allmpnet_epochs_1_batch_1024_kfold_10_optim_adam_nhid_0_initiallayer_default_finallayer_default_pooling_all_agglayers_AGGLAYERS_processado_devacc.csv",
-    "/home/yandellwsl/pooling_paper_results/tables_final_results/cl_models_deberta-base_epochs_1_batch_1024_kfold_10_optim_adam_nhid_0_initiallayer_default_finallayer_default_pooling_all_agglayers_AGGLAYERS/cl_devacc/cl_models_deberta-base_epochs_1_batch_1024_kfold_10_optim_adam_nhid_0_initiallayer_default_finallayer_default_pooling_all_agglayers_AGGLAYERS_processado_devacc.csv"
-]
+files_base_acc = [destino_cl_acc + "/" + p for p in os.listdir(destino_cl_acc)]
+files_base_devacc = [destino_cl_devacc + "/" + p for p in os.listdir(destino_cl_devacc)]
+
 ######FILES LARGE
 files_large_acc = []
 files_large_devacc = []
-
 
 #JOINS TABLES BASE
 if len(files_base_acc) > 0 and len(files_base_devacc) > 0:
