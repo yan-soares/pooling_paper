@@ -68,7 +68,7 @@ class SentenceEncoder:
             self.tokenizer = AutoTokenizer.from_pretrained(self.name_model)
             self.model = AutoModel.from_pretrained(self.name_model, output_hidden_states=True).to(self.device)
           
-    def _encode(self, sentences, batch_size=2048): 
+    def _encode(self, sentences, current_task, batch_size=2048): 
         tokens = self.tokenizer(
             sentences, padding="longest", truncation=True, return_tensors="pt", max_length = self.model.config.max_position_embeddings
         )
@@ -427,6 +427,7 @@ def main():
     parser.add_argument("--final_layer", type=int, help="Camada inicial para execução dos experimentos (default metade superior)")
     parser.add_argument("--poolings", type=str, required=True, default="all", help="Poolings separados por virgula (sem espacos) ou simple, simple-ns, two, three")
     parser.add_argument("--agg_layers", type=str, required=True, default="ALL", help="agg layers separados por virgula (sem espacos)")
+    parser.add_argument("--tasks", type=str, help="tasks separados por virgula (sem espacos)")
     args = parser.parse_args()
 
     task_type_args = args.task_type 
@@ -440,6 +441,7 @@ def main():
     final_layer_args = args.final_layer
     poolings_args = args.poolings.split(",")
     agg_layers_args = args.agg_layers.split(",")  
+    tasks_args = args.tasks.split(",") 
 
     main_path = '../pooling_paper_results/main_experiments_tables'   
 
@@ -461,11 +463,13 @@ def main():
     if task_type_args == "classification":      
         filename_cl = "cl" + filename_task
         classification_tasks = ['MR', 'CR', 'SUBJ', 'MPQA', 'SST2', 'TREC', 'MRPC']        
+        classification_tasks = tasks_args if args.tasks is not None else classification_tasks
         tasks_run(models_args, epochs_args, nhid_args, main_path, initial_layer_args, final_layer_args, poolings_args, agg_layers_args, filename_cl, classification_tasks, 'cl', batch_args, optim_args, kfold_args)
 
     elif task_type_args == "similarity":
         filename_si = "si" + filename_task
         similarity_tasks = ['STS12', 'STS13', 'STS14', 'STS15', 'STS16', 'STSBenchmark', 'SICKRelatedness']
+        similarity_tasks = tasks_args if args.tasks is not None else similarity_tasks
         tasks_run(models_args, epochs_args, nhid_args, main_path, initial_layer_args, final_layer_args, poolings_args, agg_layers_args, filename_si, similarity_tasks, 'si', batch_args, optim_args, kfold_args)
 
 if __name__ == "__main__":

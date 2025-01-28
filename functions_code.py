@@ -111,9 +111,5 @@ def get_device():
 
 def batcher(params, batch):
     sentences = [' '.join(sent) for sent in batch]
-    return params['encoder']._encode(sentences)
-
-def batcher_generate_all(params, batch):
-    sentences = [' '.join(sent) for sent in batch]
-    return params['encoder']._encode_generate_all(sentences, params.current_task)
+    return params['encoder']._encode(sentences, params.current_task)
 
