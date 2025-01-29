@@ -441,7 +441,6 @@ def main():
     final_layer_args = args.final_layer
     poolings_args = args.poolings.split(",")
     agg_layers_args = args.agg_layers.split(",")  
-    tasks_args = args.tasks.split(",") 
 
     main_path = '../pooling_paper_results/main_experiments_tables'   
 
@@ -463,13 +462,13 @@ def main():
     if task_type_args == "classification":      
         filename_cl = "cl" + filename_task
         classification_tasks = ['MR', 'CR', 'SUBJ', 'MPQA', 'SST2', 'TREC', 'MRPC']        
-        classification_tasks = tasks_args if args.tasks is not None else classification_tasks
+        classification_tasks = args.tasks.split(",") if args.tasks is not None else classification_tasks
         tasks_run(models_args, epochs_args, nhid_args, main_path, initial_layer_args, final_layer_args, poolings_args, agg_layers_args, filename_cl, classification_tasks, 'cl', batch_args, optim_args, kfold_args)
 
     elif task_type_args == "similarity":
         filename_si = "si" + filename_task
         similarity_tasks = ['STS12', 'STS13', 'STS14', 'STS15', 'STS16', 'STSBenchmark', 'SICKRelatedness']
-        similarity_tasks = tasks_args if args.tasks is not None else similarity_tasks
+        similarity_tasks = args.tasks.split(",") if args.tasks is not None else similarity_tasks
         tasks_run(models_args, epochs_args, nhid_args, main_path, initial_layer_args, final_layer_args, poolings_args, agg_layers_args, filename_si, similarity_tasks, 'si', batch_args, optim_args, kfold_args)
 
 if __name__ == "__main__":
