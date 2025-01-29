@@ -50,6 +50,8 @@ def get_pooling_strategies_with_layers(qtd_layers, pooling_techniques, initial_l
     AVGL6L = []
     SUML4BL = []
     AVGL4BL = []
+    SUML4BL2 = []
+    AVGL4BL2 = []
     SUMALL = []
     AVGALL = []
     BEST = []
@@ -60,6 +62,8 @@ def get_pooling_strategies_with_layers(qtd_layers, pooling_techniques, initial_l
         AVGL6L.append(p + f"_AVGL6L") 
         SUML4BL.append(p + f"_SUML4BL")
         AVGL4BL.append(p + f"_AVGL4BL") 
+        SUML4BL2.append(p + f"_SUML4BL2")
+        AVGL4BL2.append(p + f"_AVGL4BL2") 
         SUMALL.append(p + f"_SUMALL")
         AVGALL.append(p + f"_AVGALL") 
         BEST.append(p + f"_BEST") 
@@ -71,6 +75,9 @@ def get_pooling_strategies_with_layers(qtd_layers, pooling_techniques, initial_l
     if agg_layers_args[0] == 'AGGLAYERS':
         lyrs = ["SUML4L"] + ["AVGL4L"] + ["SUML6L" ]+ ["AVGL6L"] + ["SUML4BL"] + ["AVGL4BL"] + ["SUMALL"] + ["AVGALL"]
         return SUML4L + AVGL4L + SUML6L + AVGL6L + SUML4BL + AVGL4BL + SUMALL + AVGALL, lyrs
+    if agg_layers_args[0] == 'NEWAGGLAYERS':
+        lyrs =["SUML4BL2"] + ["AVGL4BL2"]
+        return SUML4BL2 + AVGL4BL2, lyrs
     if agg_layers_args[0] == 'BEST':
         return BEST, ["BEST"]
     
@@ -97,6 +104,12 @@ def get_pooling_strategies_with_layers(qtd_layers, pooling_techniques, initial_l
     if 'AVGL4BL' in agg_layers_args:
         pooling_strategies_with_layers += AVGL4BL
         lyrs += ["AVGL4BL"]      
+    if 'SUML4BL2' in agg_layers_args:
+        pooling_strategies_with_layers += SUML4BL2
+        lyrs += ["SUML4BL2"]
+    if 'AVGL4BL2' in agg_layers_args:
+        pooling_strategies_with_layers += AVGL4BL2
+        lyrs += ["AVGL4BL2"]      
     if 'SUMALL' in agg_layers_args:
         pooling_strategies_with_layers += SUMALL
         lyrs += ["SUMALL"] 

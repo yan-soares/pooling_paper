@@ -296,6 +296,16 @@ class SentenceEncoder:
             name_pooling = self.pooling_strategy.split("_")[0]
             return self._get_pooling_result(AVGL4BL_hidden, attention_mask, name_pooling, self.pooling_strategy.split("_")[-1])
         
+        if self.pooling_strategy.split("_")[-1] == "SUML4BL2":
+            SUML4BL2_hidden = torch.stack(hidden_states[-6:-2], dim=0).sum(dim=0)      
+            name_pooling = self.pooling_strategy.split("_")[0]
+            return self._get_pooling_result(SUML4BL2_hidden, attention_mask, name_pooling, self.pooling_strategy.split("_")[-1])
+        
+        if self.pooling_strategy.split("_")[-1] == "AVGL4BL2":
+            AVGL4BL2_hidden = torch.stack(hidden_states[-6:-2], dim=0).mean(dim=0)      
+            name_pooling = self.pooling_strategy.split("_")[0]
+            return self._get_pooling_result(AVGL4BL2_hidden, attention_mask, name_pooling, self.pooling_strategy.split("_")[-1])
+        
         if self.pooling_strategy.split("_")[-1] == "SUMALL":
             SUMALL_hidden = torch.stack(hidden_states[1:], dim=0).sum(dim=0)          
             name_pooling = self.pooling_strategy.split("_")[0]
