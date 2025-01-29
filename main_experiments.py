@@ -395,7 +395,7 @@ def tasks_run(models_args, epochs_args, nhid_args, main_path, initial_layer_args
             if type_task == 'cl':
                 dict_results = [res.get(task, {}) for task in tasks_list]
             elif type_task == 'si':
-                dict_results = [res.get(task, {}).get('all', 0) for task in tasks_list[:4]] + [res.get(task, {}) for task in tasks_list[-2:]]
+                dict_results = [res.get(task, {}).get('all', 0) for task in tasks_list[:5]] + [res.get(task, {}) for task in tasks_list[-2:]]
             
             results_data.append({
                 "model": model_name,
