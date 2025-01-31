@@ -145,185 +145,87 @@ class SentenceEncoder:
 
         return max_pooled_embeddings
     
-    def _get_pooling_result(self, hidden_state, attention_mask, name_pooling, typeagg):
+    def _simple_pooling(self, hidden_state, attention_mask, name_pooling):
 
-        if typeagg == "BEST":
-            
-            if self.name_model == 'sentence-transformers/all-mpnet-base-v2':
-
-                SUML4L_hidden = torch.stack(hidden_state[-4:], dim=0).sum(dim=0) 
-                SUML6L_hidden = torch.stack(hidden_state[-6:], dim=0).sum(dim=0)
-                AVGL6L_hidden = torch.stack(hidden_state[-6:], dim=0).mean(dim=0)
-
-                self.print_best_layers = "SBERT-BASE: cls=SUML6L, avg=SUML6L, sum=AVGL6L, max=SUML4L, avg-ns=SUML6L, sum-ns=AVGL6L, max-ns=SUML4L"
-
-                cls_result = SUML6L_hidden[:, 0, :]
-                avg_result = ((SUML6L_hidden * attention_mask.unsqueeze(-1)).sum(1) / attention_mask.sum(-1).unsqueeze(-1).clamp(min=1e-9))
-                sum_result = (AVGL6L_hidden * attention_mask.unsqueeze(-1)).sum(dim=1)
-                max_result = torch.max(SUML4L_hidden.masked_fill(attention_mask.unsqueeze(-1).expand(SUML4L_hidden.size()).float() == 0, -1e9), dim=1)[0]
-                avg_ns_result = self._mean_pooling_exclude_cls_sep(SUML6L_hidden, attention_mask)
-                sum_ns_result = self._sum_pooling_exclude_cls_sep(AVGL6L_hidden, attention_mask)
-                max_ns_result = self._max_pooling_exclude_cls_sep(SUML4L_hidden, attention_mask)
-            if self.name_model == 'microsoft/deberta-v3-base':
-
-                SUML4L_hidden = torch.stack(hidden_state[-4:], dim=0).sum(dim=0) 
-                SUML4BL_hidden = torch.stack(hidden_state[-5:-1], dim=0).sum(dim=0)
-                AVGL4BL_hidden = torch.stack(hidden_state[-5:-1], dim=0).mean(dim=0)
-
-                self.print_best_layers =  "DEBERTA-BASE: cls=SUML4L, avg=SUML4BL, sum=AVGL4BL, max=LYR-9, avg-ns=SUML4BL, sum-ns=AVGL4BL, max-ns=LYR-10"
-
-                cls_result = SUML4L_hidden[:, 0, :]
-                avg_result = ((SUML4BL_hidden * attention_mask.unsqueeze(-1)).sum(1) / attention_mask.sum(-1).unsqueeze(-1).clamp(min=1e-9))
-                sum_result = (AVGL4BL_hidden * attention_mask.unsqueeze(-1)).sum(dim=1)
-                max_result = torch.max(hidden_state[9].masked_fill(attention_mask.unsqueeze(-1).expand(hidden_state[9].size()).float() == 0, -1e9), dim=1)[0]
-                avg_ns_result = self._mean_pooling_exclude_cls_sep(SUML4BL_hidden, attention_mask)
-                sum_ns_result = self._sum_pooling_exclude_cls_sep(AVGL4BL_hidden, attention_mask)
-                max_ns_result = self._max_pooling_exclude_cls_sep(hidden_state[10], attention_mask)
-        else:
-            self.print_best_layers =  "NORMAL"
-            cls_result = hidden_state[:, 0, :]
-            avg_result = ((hidden_state * attention_mask.unsqueeze(-1)).sum(1) / attention_mask.sum(-1).unsqueeze(-1).clamp(min=1e-9))
-            sum_result = (hidden_state * attention_mask.unsqueeze(-1)).sum(dim=1)
-            max_result = torch.max(hidden_state.masked_fill(attention_mask.unsqueeze(-1).expand(hidden_state.size()).float() == 0, -1e9), dim=1)[0]
-            avg_ns_result = self._mean_pooling_exclude_cls_sep(hidden_state, attention_mask)
-            sum_ns_result = self._sum_pooling_exclude_cls_sep(hidden_state, attention_mask)
-            max_ns_result = self._max_pooling_exclude_cls_sep(hidden_state, attention_mask)
-
-        match name_pooling:
-
+         match name_pooling:
+             
             case "CLS":
-                return cls_result
+                return hidden_state[:, 0, :]
             
             case "AVG":
-                return avg_result
+                return ((hidden_state * attention_mask.unsqueeze(-1)).sum(1) / attention_mask.sum(-1).unsqueeze(-1).clamp(min=1e-9))
             
             case "SUM":
-                return sum_result
+                return (hidden_state * attention_mask.unsqueeze(-1)).sum(dim=1)
             
             case "MAX":
-                return max_result
-            
+                return torch.max(hidden_state.masked_fill(attention_mask.unsqueeze(-1).expand(hidden_state.size()).float() == 0, -1e9), dim=1)[0]
+             
             case "AVG-NS":
-                return avg_ns_result
+                return self._mean_pooling_exclude_cls_sep(hidden_state, attention_mask)
             
             case "SUM-NS":
-                return sum_ns_result
+                return self._sum_pooling_exclude_cls_sep(hidden_state, attention_mask)
             
             case "MAX-NS":
-                return max_ns_result
-                                    
-            case "CLS+AVG":
-                return torch.cat((cls_result, avg_result), dim=1)
-            
-            case "CLS+SUM":
-                return torch.cat((cls_result, sum_result), dim=1)
-            
-            case "CLS+MAX":
-                return torch.cat((cls_result, max_result), dim=1)
-                        
-            case "CLS+AVG-NS":
-                return torch.cat((cls_result, avg_ns_result), dim=1)
-            
-            case "CLS+SUM-NS":
-                return torch.cat((cls_result, sum_ns_result), dim=1)
-            
-            case "CLS+MAX-NS":
-                return torch.cat((cls_result, max_ns_result), dim=1)
+                return self._max_pooling_exclude_cls_sep(hidden_state, attention_mask)  
 
-            case "CLS+AVG+AVG-NS":
-                return torch.cat((cls_result, avg_result, avg_ns_result), dim=1)
+    def _get_pooling_result(self, hidden_state, attention_mask, name_pooling, name_agg):
+
+        name_pooling_split = name_pooling.split('+')
+        self.print_best_layers =  "NORMAL"
+
+        match len(name_pooling_split):
+
+            case 1:
+                return self._simple_pooling(hidden_state, attention_mask, name_pooling_split[0])
             
-            case "CLS+AVG+SUM-NS":
-                return torch.cat((cls_result, avg_result, sum_ns_result), dim=1)
+            case 2:
+                return torch.cat(
+                (
+                    self._simple_pooling(hidden_state, attention_mask, name_pooling_split[0]),
+                    self._simple_pooling(hidden_state, attention_mask, name_pooling_split[1])
+                ), 
+                dim=1)
             
-            case "CLS+AVG+MAX-NS":
-                return torch.cat((cls_result, avg_result, max_ns_result), dim=1)
-                        
-            case "CLS+SUM+AVG-NS":
-                return torch.cat((cls_result, sum_result, avg_ns_result), dim=1)
-            
-            case "CLS+SUM+SUM-NS":
-                return torch.cat((cls_result, sum_result, sum_ns_result), dim=1)
-            
-            case "CLS+SUM+MAX-NS":
-                return torch.cat((cls_result, sum_result, max_ns_result), dim=1)
-            
-            case "CLS+MAX+AVG-NS":
-                return torch.cat((cls_result, max_result, avg_ns_result), dim=1)
-            
-            case "CLS+MAX+SUM-NS":
-                return torch.cat((cls_result, max_result, sum_ns_result), dim=1)
-            
-            case "CLS+MAX+MAX-NS":
-                return torch.cat((cls_result, max_result, max_ns_result), dim=1)
+            case 3:
+                return torch.cat(
+                (
+                    self._simple_pooling(hidden_state, attention_mask, name_pooling_split[0]),
+                    self._simple_pooling(hidden_state, attention_mask, name_pooling_split[1]),
+                    self._simple_pooling(hidden_state, attention_mask, name_pooling_split[2])
+                ), 
+                dim=1)
                                                          
-    def _apply_pooling(self, output, attention_mask):
-        hidden_states = output.hidden_states
+    def _apply_pooling(self, output, attention_mask):  
 
-        if self.pooling_strategy.split("_")[-1].startswith("LYR"):
-            layer_idx = int(self.pooling_strategy.split("_")[-1].split('-')[-1])   
+        hidden_states = output.hidden_states
+        name_pooling = self.pooling_strategy.split("_")[0]
+        name_agg = self.pooling_strategy.split("_")[-1]
+
+        if name_agg.startswith("LYR"):
+            layer_idx = int(name_agg.split('-')[-1])   
             LYR_hidden =  hidden_states[layer_idx]            
-            name_pooling = self.pooling_strategy.split("_")[0]
-            return self._get_pooling_result(LYR_hidden, attention_mask, name_pooling, "LYR")
+            return self._get_pooling_result(LYR_hidden, attention_mask, name_pooling, "LYR")        
+        else:        
+            name_agg_type = name_agg.split("-")[0]
+            agg_initial_layer = int(name_agg.split("-")[1])
+            agg_final_layer = int(name_agg.split("-")[2])
+            
+            match name_agg_type:  
+
+                case "SUM":
+                    return self._get_pooling_result(torch.stack(hidden_states[agg_initial_layer:agg_final_layer+1], dim=0).sum(dim=0), attention_mask, name_pooling, name_agg)
+                    
+                case "AVG":
+                    return self._get_pooling_result(torch.stack(hidden_states[agg_initial_layer:agg_final_layer+1], dim=0).mean(dim=0), attention_mask, name_pooling, name_agg)                  
         
-        if self.pooling_strategy.split("_")[-1] == "SUML4L":
-            SUML4L_hidden = torch.stack(hidden_states[-4:], dim=0).sum(dim=0)      
-            name_pooling = self.pooling_strategy.split("_")[0]
-            return self._get_pooling_result(SUML4L_hidden, attention_mask, name_pooling, self.pooling_strategy.split("_")[-1])
-        
-        if self.pooling_strategy.split("_")[-1] == "AVGL4L":
-            AVGL4L_hidden = torch.stack(hidden_states[-4:], dim=0).mean(dim=0)      
-            name_pooling = self.pooling_strategy.split("_")[0]
-            return self._get_pooling_result(AVGL4L_hidden, attention_mask, name_pooling, self.pooling_strategy.split("_")[-1])
-        
-        if self.pooling_strategy.split("_")[-1] == "SUML6L":
-            SUML6L_hidden = torch.stack(hidden_states[-6:], dim=0).sum(dim=0)      
-            name_pooling = self.pooling_strategy.split("_")[0]
-            return self._get_pooling_result(SUML6L_hidden, attention_mask, name_pooling, self.pooling_strategy.split("_")[-1])
-        
-        if self.pooling_strategy.split("_")[-1] == "AVGL6L":
-            AVGL6L_hidden = torch.stack(hidden_states[-6:], dim=0).mean(dim=0)      
-            name_pooling = self.pooling_strategy.split("_")[0]
-            return self._get_pooling_result(AVGL6L_hidden, attention_mask, name_pooling, self.pooling_strategy.split("_")[-1])
-        
-        if self.pooling_strategy.split("_")[-1] == "SUML4BL":
-            SUML4BL_hidden = torch.stack(hidden_states[-5:-1], dim=0).sum(dim=0)      
-            name_pooling = self.pooling_strategy.split("_")[0]
-            return self._get_pooling_result(SUML4BL_hidden, attention_mask, name_pooling, self.pooling_strategy.split("_")[-1])
-        
-        if self.pooling_strategy.split("_")[-1] == "AVGL4BL":
-            AVGL4BL_hidden = torch.stack(hidden_states[-5:-1], dim=0).mean(dim=0)      
-            name_pooling = self.pooling_strategy.split("_")[0]
-            return self._get_pooling_result(AVGL4BL_hidden, attention_mask, name_pooling, self.pooling_strategy.split("_")[-1])
-        
-        if self.pooling_strategy.split("_")[-1] == "SUML4BL2":
-            SUML4BL2_hidden = torch.stack(hidden_states[-6:-2], dim=0).sum(dim=0)      
-            name_pooling = self.pooling_strategy.split("_")[0]
-            return self._get_pooling_result(SUML4BL2_hidden, attention_mask, name_pooling, self.pooling_strategy.split("_")[-1])
-        
-        if self.pooling_strategy.split("_")[-1] == "AVGL4BL2":
-            AVGL4BL2_hidden = torch.stack(hidden_states[-6:-2], dim=0).mean(dim=0)      
-            name_pooling = self.pooling_strategy.split("_")[0]
-            return self._get_pooling_result(AVGL4BL2_hidden, attention_mask, name_pooling, self.pooling_strategy.split("_")[-1])
-        
-        if self.pooling_strategy.split("_")[-1] == "SUMALL":
-            SUMALL_hidden = torch.stack(hidden_states[1:], dim=0).sum(dim=0)          
-            name_pooling = self.pooling_strategy.split("_")[0]
-            return self._get_pooling_result(SUMALL_hidden, attention_mask, name_pooling, self.pooling_strategy.split("_")[-1])
-        
-        if self.pooling_strategy.split("_")[-1] == "AVGALL":
-            AVGALL_hidden = torch.stack(hidden_states[1:], dim=0).mean(dim=0)            
-            name_pooling = self.pooling_strategy.split("_")[0]
-            return self._get_pooling_result(AVGALL_hidden, attention_mask, name_pooling, self.pooling_strategy.split("_")[-1])
-                
-        if self.pooling_strategy.split("_")[-1] == "BEST":
-            name_pooling = self.pooling_strategy.split("_")[0]
-            return self._get_pooling_result(hidden_states, attention_mask, name_pooling, self.pooling_strategy.split("_")[-1])
-    
     def _strategies_pooling_list (self, initial_layer_args, final_layer_args, poolings_args, agg_layers_args):
         
+        #POOLING
         pooling_techniques = functions_code.get_pooling_techniques(poolings_args, agg_layers_args)
-                
+        
+        #LAYERS
         if initial_layer_args is not None:
             initial_layer = initial_layer_args
         else:
@@ -334,8 +236,15 @@ class SentenceEncoder:
         else:
             final_layer = int(self.qtd_layers)
 
-        pooling_strategies, list_lyrs = functions_code.get_pooling_strategies_with_layers(final_layer, pooling_techniques, initial_layer, agg_layers_args)       
-        
+        list_lyrs = functions_code.get_list_layers(final_layer, initial_layer, agg_layers_args)
+
+        #STRATEGIES CONCAT
+        pooling_strategies = []
+        for l in list_lyrs:
+            for p in pooling_techniques:
+                pooling_strategies.append(p + "_" + l) 
+
+        #RETURN
         return pooling_strategies, pooling_techniques, list_lyrs
 
 def run_senteval(model_name, tasks, epochs, nhid_number, initial_layer_args, final_layer_args, poolings_args, agg_layers_args, type_task, batch_args, optim_args, kfold_args):
@@ -452,7 +361,7 @@ def main():
     poolings_args = args.poolings.split(",")
     agg_layers_args = args.agg_layers.split(",")  
 
-    main_path = '../pooling_paper_results/main_experiments_tables'   
+    main_path = '../pooling_paper_results/main_experiments_tables_new_code_31012025'   
 
     initial_layer_args_print = args.initial_layer if args.initial_layer is not None else "default"
     final_layer_args_print = args.final_layer if args.final_layer is not None else "default"
