@@ -29,18 +29,6 @@ def get_pooling_techniques(poolings_args, agg_layers_args):
         pooling_prefixs = simple_poolings + simple_ns_poolings + two_tokens_poolings + three_tokens_poolings
         return pooling_prefixs
     
-    if poolings_args[0] == 'new':
-        return ['AVG+SUM', 'AVG+MAX', 'AVG+AVG-NS', 'AVG+SUM-NS', 'AVG+MAX-NS', 
-                'SUM+MAX', 'SUM+AVG-NS', 'SUM+SUM-NS', 'SUM+MAX-NS', 
-                'MAX+AVG-NS', 'MAX+SUM-NS', 'MAX+MAX-NS',
-                'AVG-NS+SUM-NS', 'AVG-NS+MAX-NS',
-                'SUM-NS+MAX-NS', 'CLS+AVG+SUM',
-                'CLS+AVG+MAX', 'CLS+SUM+MAX', 'CLS+AVG-NS+SUM-NS', 'CLS+AVG-NS+MAX-NS', 'CLS+SUM-NS+MAX-NS', 
-                'AVG+SUM+MAX', 'AVG+SUM+AVG-NS', 'AVG+SUM+SUM-NS', 'AVG+SUM+MAX-NS', 'AVG+MAX+AVG-NS', 
-                'AVG+MAX+SUM-NS', 'AVG+MAX+MAX-NS', 'AVG+AVG-NS+SUM-NS', 'AVG+AVG-NS+MAX-NS', 'AVG+SUM-NS+MAX-NS',
-                'SUM+MAX+AVG-NS', 'SUM+MAX+SUM-NS', 'SUM+MAX+MAX-NS', 'SUM+AVG-NS+SUM-NS', 'SUM+AVG-NS+MAX-NS', 
-                'SUM+SUM-NS+MAX-NS', 'MAX+AVG-NS+SUM-NS', 'MAX+AVG-NS+MAX-NS', 'MAX+SUM-NS+MAX-NS',  'AVG-NS+SUM-NS+MAX-NS']
-    
     if 'simple' in poolings_args:
         pooling_prefixs += simple_poolings
     if 'simple-ns' in poolings_args:
@@ -56,15 +44,10 @@ def get_pooling_techniques(poolings_args, agg_layers_args):
 
 def get_list_layers(final_layer, initial_layer, agg_layers_args):
 
-    list_lyrs_agg = ["SUM-7-12", 
-                     "SUM-7-10", "SUM-8-11", "SUM-9-12",
-                     "SUM-7-9", "SUM-8-10",  "SUM-9-11", "SUM-10-12",                      
-                     "SUM-7-8", "SUM-8-9",  "SUM-9-10", "SUM-10-11", "SUM-11-12",                     
-                     "SUM-1-12"] + ["AVG-7-12", 
-                     "AVG-7-10", "AVG-8-11", "AVG-9-12",
-                     "AVG-7-9", "AVG-8-10",  "AVG-9-11", "AVG-10-12",                      
-                     "AVG-7-8", "AVG-8-9",  "AVG-9-10", "AVG-10-11", "AVG-11-12",                     
-                     "AVG-1-12"]
+    list_lyrs_agg_sum = ["SUM-7-12", "SUM-7-10", "SUM-8-11", "SUM-9-12", "SUM-7-9", "SUM-8-10",  "SUM-9-11", "SUM-10-12", "SUM-7-8", "SUM-8-9",  "SUM-9-10", "SUM-10-11", "SUM-11-12", "SUM-1-12"] 
+    list_lyrs_agg_avg = ["AVG-7-12", "AVG-7-10", "AVG-8-11", "AVG-9-12", "AVG-7-9", "AVG-8-10",  "AVG-9-11", "AVG-10-12", "AVG-7-8", "AVG-8-9",  "AVG-9-10", "AVG-10-11", "AVG-11-12", "AVG-1-12"]
+
+    list_lyrs_agg = list_lyrs_agg_sum + list_lyrs_agg_avg
     lyrs = []
         
     if agg_layers_args[0] == 'ALL':
@@ -73,13 +56,12 @@ def get_list_layers(final_layer, initial_layer, agg_layers_args):
         lyrs += list_lyrs_agg
         return lyrs
     
-    if agg_layers_args[0] == 'AGGLAYERS':
-        return list_lyrs_agg
+    if agg_layers_args[0] == 'SUMAGGLAYERS':
+        return list_lyrs_agg_sum
     
-    if agg_layers_args[0] == 'NEWAGGLAYERS':
-        return ["SUM-7-9", "SUM-8-10",  "SUM-9-11", "SUM-10-12", "SUM-7-8", "SUM-8-9",  "SUM-9-10", "SUM-10-11", "SUM-11-12",
-                "AVG-7-9", "AVG-8-10",  "AVG-9-11", "AVG-10-12","AVG-7-8", "AVG-8-9",  "AVG-9-10", "AVG-10-11", "AVG-11-12"]
-    
+    if agg_layers_args[0] == 'AVGAGGLAYERS':
+        return list_lyrs_agg_avg
+       
     if agg_layers_args[0] == 'LYR':
         for i in range(initial_layer, final_layer):
             lyrs.append(f"LYR-{i+1}")

@@ -67,7 +67,7 @@ class SentenceEncoder:
             self.qtd_layers = 12
             self.tokenizer = AutoTokenizer.from_pretrained(self.name_model)
             self.model = AutoModel.from_pretrained(self.name_model, output_hidden_states=True).to(self.device)
-          
+    
     def _encode(self, sentences, current_task, batch_size=2048): 
         tokens = self.tokenizer(
             sentences, padding="longest", truncation=True, return_tensors="pt", max_length = self.model.config.max_position_embeddings
