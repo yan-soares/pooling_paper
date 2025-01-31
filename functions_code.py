@@ -31,6 +31,8 @@ def get_pooling_techniques(poolings_args, agg_layers_args):
                                  'MAX+AVG-NS+SUM-NS', 'MAX+AVG-NS+MAX-NS', 'MAX+SUM-NS+MAX-NS', 
                                  'AVG-NS+SUM-NS+MAX-NS']
     
+    two_and_three_new = two_tokens_poolings_new + three_tokens_poolings_new
+    
     pooling_prefixs = []
 
     if agg_layers_args[0] == 'BEST':
@@ -53,6 +55,8 @@ def get_pooling_techniques(poolings_args, agg_layers_args):
         pooling_prefixs += two_tokens_poolings_new
     elif 'three_new' in poolings_args:
         pooling_prefixs += three_tokens_poolings_new
+    elif 'two_and_three_new' in poolings_args:
+        pooling_prefixs += two_and_three_new
     else:
         pooling_prefixs += poolings_args
 
