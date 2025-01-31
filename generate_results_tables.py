@@ -38,12 +38,23 @@ def parse_dict_with_eval(value):
         return {}
     
 def get_type_pooling(pooling_str):
+
     simple_poolings = ['CLS', 'AVG', 'SUM', 'MAX']
     simple_ns_poolings = ['AVG-NS', 'SUM-NS', 'MAX-NS']
-    two_tokens_poolings = ['CLS+AVG', 'CLS+SUM', 'CLS+MAX', 'CLS+AVG-NS', 'CLS+SUM-NS', 'CLS+MAX-NS']
-    three_tokens_poolings = ['CLS+AVG+AVG-NS', 'CLS+AVG+SUM-NS', 'CLS+AVG+MAX-NS', 
-                            'CLS+SUM+AVG-NS', 'CLS+SUM+SUM-NS', 'CLS+SUM+MAX-NS', 
-                            'CLS+MAX+AVG-NS', 'CLS+MAX+SUM-NS', 'CLS+MAX+MAX-NS']
+    two_tokens_poolings = ['CLS+AVG', 'CLS+SUM', 'CLS+MAX', 'CLS+AVG-NS', 'CLS+SUM-NS', 'CLS+MAX-NS',
+                           'AVG+SUM', 'AVG+MAX', 'AVG+AVG-NS', 'AVG+SUM-NS', 'AVG+MAX-NS', 
+                           'SUM+MAX', 'SUM+AVG-NS', 'SUM+SUM-NS', 'SUM+MAX-NS',
+                           'MAX+AVG-NS', 'MAX+SUM-NS', 'MAX+MAX-NS',
+                           'AVG-NS+SUM-NS', 'AVG-NS+MAX-NS',
+                           'SUM-NS+MAX-NS']
+    three_tokens_poolings = ['CLS+AVG+SUM', 'CLS+AVG+MAX', 'CLS+AVG+AVG-NS', 'CLS+AVG+SUM-NS', 'CLS+AVG+MAX-NS', 
+                             'CLS+SUM+MAX', 'CLS+SUM+AVG-NS', 'CLS+SUM+SUM-NS', 'CLS+SUM+MAX-NS', 'CLS+MAX+AVG-NS',
+                             'CLS+MAX+SUM-NS', 'CLS+MAX+MAX-NS', 'CLS+AVG-NS+SUM-NS', 'CLS+AVG-NS+MAX-NS', 'CLS+SUM-NS+MAX-NS', 
+                             'AVG+SUM+MAX', 'AVG+SUM+AVG-NS', 'AVG+SUM+SUM-NS', 'AVG+SUM+MAX-NS', 'AVG+MAX+AVG-NS', 
+                             'AVG+MAX+SUM-NS', 'AVG+MAX+MAX-NS', 'AVG+AVG-NS+SUM-NS', 'AVG+AVG-NS+MAX-NS', 'AVG+SUM-NS+MAX-NS', 
+                             'SUM+MAX+AVG-NS', 'SUM+MAX+SUM-NS', 'SUM+MAX+MAX-NS', 'SUM+AVG-NS+SUM-NS', 'SUM+AVG-NS+MAX-NS', 'SUM+SUM-NS+MAX-NS', 
+                             'MAX+AVG-NS+SUM-NS', 'MAX+AVG-NS+MAX-NS', 'MAX+SUM-NS+MAX-NS', 
+                             'AVG-NS+SUM-NS+MAX-NS']
     
     if pooling_str in simple_poolings:
         return "simple"
@@ -55,7 +66,7 @@ def get_type_pooling(pooling_str):
         return "three-tokens"
     else:
         return "not categorized"
-
+    
 def tables_classification(cl_paths, columns_tasks_cl, ordem_colunas_cl):
     for clp in cl_paths:
         path_cl = MAIN_PATH + '/' + clp
@@ -102,16 +113,16 @@ def tables_classification(cl_paths, columns_tasks_cl, ordem_colunas_cl):
 
         os.makedirs(MAIN_PATH + '/processados/' + clp, exist_ok=True)
         shutil.copy(caminho_arquivo_cl, MAIN_PATH + '/processados/' + clp)
-        #shutil.move(MAIN_PATH + '/' + clp, FINAL_RESULTS_PATH + '/' + clp)
         move_with_replace(MAIN_PATH + '/' + clp, FINAL_RESULTS_PATH_CL + '/' + clp)
 
 def tables_similarity(si_paths, columns_tasks_si, ordem_colunas_si):
    for slp in si_paths:
         path_si = MAIN_PATH + '/' + slp
-        path_si_pearson = path_si + "/" + "si_pearson"
         path_si_spearman = path_si + "/" + "si_spearman"
-        os.makedirs(path_si_pearson, exist_ok=True)
+        path_si_pearson = path_si + "/" + "si_pearson"        
+        
         os.makedirs(path_si_spearman, exist_ok=True)
+        os.makedirs(path_si_pearson, exist_ok=True)
 
         if [f for f in os.listdir(path_si) if f.endswith('_intermediate.csv')]:
             os.remove(MAIN_PATH + '/' + slp + '/' + [f for f in os.listdir(path_si) if f.endswith('_intermediate.csv')][0])
@@ -125,8 +136,12 @@ def tables_similarity(si_paths, columns_tasks_si, ordem_colunas_si):
         spearman_data = {'model': data['model'], 'pooling': data['pooling'], 'epochs': data['epochs'], 'out_vec_size': data['out_vec_size'], 'qtd_layers': data['qtd_layers'], 'nhid': data['nhid'], 'best_layers': data['best_layers']}
 
         for task in columns_tasks_si:
-            pearson_data[task] = data[task].apply(lambda x: (parse_dict_with_eval(x).get('pearson', None).get('mean', None)) * 100)
-            spearman_data[task] = data[task].apply(lambda x: (parse_dict_with_eval(x).get('spearman', None).get('mean', None)) * 100)
+            if task in columns_tasks_si[:5]:
+                pearson_data[task] = data[task].apply(lambda x: (parse_dict_with_eval(x).get('pearson', None).get('mean', None)))
+                spearman_data[task] = data[task].apply(lambda x: (parse_dict_with_eval(x).get('spearman', None).get('mean', None)))
+            elif task in columns_tasks_si[5:]:
+                pearson_data[task] = data[task].apply(lambda x: (parse_dict_with_eval(x).get('pearson', None)))
+                spearman_data[task] = data[task].apply(lambda x: (parse_dict_with_eval(x).get('spearman', None)))
 
         pearson_table = pd.DataFrame(pearson_data)
         spearman_table = pd.DataFrame(spearman_data)        
@@ -151,7 +166,6 @@ def tables_similarity(si_paths, columns_tasks_si, ordem_colunas_si):
 
         os.makedirs(MAIN_PATH + '/processados/' + slp, exist_ok=True)
         shutil.copy(caminho_arquivo_si, MAIN_PATH + '/processados/' + slp)
-        #shutil.move(MAIN_PATH + '/' + slp, FINAL_RESULTS_PATH + '/' + slp)
         move_with_replace(MAIN_PATH + '/' + slp, FINAL_RESULTS_PATH_SI + '/' + slp)
 
 def main():
