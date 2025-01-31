@@ -31,11 +31,11 @@ def get_pooling_techniques(poolings_args, agg_layers_args):
     
     if 'simple' in poolings_args:
         pooling_prefixs += simple_poolings
-    if 'simple-ns' in poolings_args:
+    elif 'simple-ns' in poolings_args:
         pooling_prefixs += simple_ns_poolings
-    if 'two' in poolings_args:
+    elif 'two' in poolings_args:
         pooling_prefixs += two_tokens_poolings
-    if 'three' in poolings_args:
+    elif 'three' in poolings_args:
         pooling_prefixs += three_tokens_poolings  
     else:
         pooling_prefixs += poolings_args
