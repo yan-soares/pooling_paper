@@ -32,33 +32,35 @@ def get_pooling_techniques(poolings_args, agg_layers_args):
                                  'AVG-NS+SUM-NS+MAX-NS']
     
     two_and_three_new = two_tokens_poolings_new + three_tokens_poolings_new
+
+    two_tokens_best = ['CLS+AVG', 'CLS+SUM', 'CLS+AVG-NS', 'CLS+SUM-NS', 'AVG+SUM', 'AVG+AVG-NS', 'AVG+SUM-NS', 'SUM+AVG-NS', 'SUM+SUM-NS', 'AVG-NS+SUM-NS']
+    three_tokens_best = ['CLS+AVG+SUM','CLS+AVG+AVG-NS', 'CLS+AVG+SUM-NS', 'CLS+SUM+AVG-NS', 'CLS+SUM+SUM-NS', 'CLS+AVG-NS+SUM-NS', 'AVG+SUM+AVG-NS', 'AVG+SUM+SUM-NS', 'AVG+AVG-NS+SUM-NS', 'SUM+AVG-NS+SUM-NS']
+
     
     pooling_prefixs = []
-
-    if agg_layers_args[0] == 'BEST':
-        pooling_prefixs = two_tokens_poolings + three_tokens_poolings
-        return pooling_prefixs
     
     if poolings_args[0] == 'all':
         pooling_prefixs = simple_poolings + simple_ns_poolings + two_tokens_poolings + three_tokens_poolings
         return pooling_prefixs
-    
+
     if 'simple' in poolings_args:
         pooling_prefixs += simple_poolings
-    elif 'simple-ns' in poolings_args:
+    if 'simple-ns' in poolings_args:
         pooling_prefixs += simple_ns_poolings
-    elif 'two' in poolings_args:
+    if 'two' in poolings_args:
         pooling_prefixs += two_tokens_poolings
-    elif 'three' in poolings_args:
+    if 'three' in poolings_args:
         pooling_prefixs += three_tokens_poolings  
-    elif 'twonew' in poolings_args:
+    if 'twonew' in poolings_args:
         pooling_prefixs += two_tokens_poolings_new
-    elif 'three_new' in poolings_args:
+    if 'three_new' in poolings_args:
         pooling_prefixs += three_tokens_poolings_new
-    elif 'two_and_three_new' in poolings_args:
+    if 'two_and_three_new' in poolings_args:
         pooling_prefixs += two_and_three_new
-    else:
-        pooling_prefixs += poolings_args
+
+    if agg_layers_args[0] == 'BEST':
+        pooling_prefixs = two_tokens_best + three_tokens_best
+        return pooling_prefixs
 
     return pooling_prefixs      
 
