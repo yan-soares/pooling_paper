@@ -37,9 +37,9 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 87	A lone biker is jumping in the air	A biker is jumping in the air , alone	5	ENTAILMENT
 88	There is no biker jumping in the air	A lone biker is jumping in the air	4.2	CONTRADICTION
 90	A man is jumping into an empty pool	A man is jumping into a full pool	3	CONTRADICTION
-91	A man is jumping into an empty pool	The man 's jumper is in the empty pool	3.1	NEUTRAL
+91	A man is jumping into an empty pool	The man ' s jumper is in the empty pool	3.1	NEUTRAL
 93	A lone biker is jumping in the air	A man is jumping into a full pool	1.7	NEUTRAL
-94	The man 's jumper is in the empty pool	A lone biker is jumping in the air	1.4	NEUTRAL
+94	The man ' s jumper is in the empty pool	A lone biker is jumping in the air	1.4	NEUTRAL
 97	A lone biker is jumping in the air	A man is jumping into an empty pool	1.5	NEUTRAL
 98	Four kids are doing backbends in the park	Four children are doing backbends in the park	4.8	ENTAILMENT
 99	Four children are doing backbends in the gym	Four children are doing backbends in the park	3.8	NEUTRAL
@@ -48,11 +48,11 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 112	Two groups of people are playing football	A player is running with the ball	2.1	NEUTRAL
 113	Two teams are competing in a baseball game	A player is running with the ball	3	NEUTRAL
 117	A player is running with the ball	Two teams are competing in a football match	2.6	NEUTRAL
-120	Five wooden stands are in front of each child 's hut	Five children are standing in front of a wooden hut	3.2	NEUTRAL
+120	Five wooden stands are in front of each child ' s hut	Five children are standing in front of a wooden hut	3.2	NEUTRAL
 122	Five kids are standing close together and one kid has a gun	Five kids are standing close together and none of the kids has a gun	3.7	CONTRADICTION
 124	Five kids are standing close together and none of the kids has a gun	Five children are standing in front of a wooden hut	2.6	NEUTRAL
 126	Five children are standing in a wooden hut	Five kids are standing close together and one kid has a gun	2.7	NEUTRAL
-127	Five wooden stands are in front of each child 's hut	Five kids are standing close together and one kid has a gun	2.3	NEUTRAL
+127	Five wooden stands are in front of each child ' s hut	Five kids are standing close together and one kid has a gun	2.3	NEUTRAL
 129	An old man is sitting in a field	A man is sitting in a field	4.4	ENTAILMENT
 130	A man is sitting in a field	A man is running in a field	2.6	NEUTRAL
 131	A person is wearing a hat and is sitting on the grass	A person is sitting in a field and is wearing a hat	4.1	NEUTRAL
@@ -63,7 +63,7 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 141	A group of friends are riding the current in a raft	A group is not riding the current in a raft	3.7	CONTRADICTION
 146	The current is being ridden by a group of friends in a raft	This group of people is practicing water safety and wearing preservers	3.2	NEUTRAL
 148	A group of friends are riding the current in a raft	This group of people is practicing water safety and wearing preservers	3.1	NEUTRAL
-150	A deer is jumping over a fence	A deer isn 't jumping over the fence	3.9	CONTRADICTION
+150	A deer is jumping over a fence	A deer isn ' t jumping over the fence	3.9	CONTRADICTION
 159	People are walking inside a building that has many murals on it	People are walking outside a building that has many murals on it	3.4	NEUTRAL
 161	Several people are in front of a colorful building	Nobody is in front of the colorful building	3.5	CONTRADICTION
 163	People are walking outside a building that has many murals on it	Nobody is in front of the colorful building	3.6	NEUTRAL
@@ -211,7 +211,7 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 494	A little dog is sprinting and the person who owns it is trying to catch it	A little dog is sprinting and its owner is trying to catch it	4.8	ENTAILMENT
 496	The black and white dog is running and a person stands behind it	A little dog is sprinting and the person who owns it is trying to catch it	3	NEUTRAL
 497	The black and white dog is running and a person stands behind it	A little dog is slowing down and the owner is quitting chasing it	2.9	NEUTRAL
-499	The black and white dog isn 't running and there is no person standing behind	A little dog is sprinting and its owner is trying to catch it	2.7	NEUTRAL
+499	The black and white dog isn ' t running and there is no person standing behind	A little dog is sprinting and its owner is trying to catch it	2.7	NEUTRAL
 500	A black person is running along a white stand and a dog barks behind him	A little dog is sprinting and its owner is trying to catch it	2.5	NEUTRAL
 505	A man wearing a dyed black shirt is sitting at the table and laughing	A black shirt is being worn by a man who is sitting at the table and laughing	4.7	ENTAILMENT
 506	A man wearing a dyed black shirt is sitting at the table and laughing	There is no man wearing a shirt dyed black , sitting at the table and laughing	3.7	CONTRADICTION
@@ -221,7 +221,7 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 514	A man is sitting comfortably at a table	A man wearing a dyed black shirt is sitting at the table and laughing	3.9	NEUTRAL
 515	A woman who is wearing a pink boa is riding a bicycle down a bridge built for pedestrians	A woman who is wearing a pink scarf is riding a bike down a bridge built for pedestrians	4.3	ENTAILMENT
 516	A woman who is taking off a pink boa is stopping her bicycle on a bridge built for pedestrians	A woman who is wearing a pink boa is riding a bicycle down a bridge built for pedestrians	3.7	NEUTRAL
-522	A woman who is wearing a pink boa is riding a bicycle down a bridge built for pedestrians	The woman wearing silver pants , pink bellbottoms and a pink scarf isn 't riding a bike	2.6	NEUTRAL
+522	A woman who is wearing a pink boa is riding a bicycle down a bridge built for pedestrians	The woman wearing silver pants , pink bellbottoms and a pink scarf isn ' t riding a bike	2.6	NEUTRAL
 524	A woman who is wearing a pink scarf is riding a bike down a bridge built for pedestrians	The woman wearing silver pants , pink bellbottoms and a pink scarf is riding a bike	3.7	NEUTRAL
 527	A woman who is wearing a pink boa is riding a bicycle down a bridge built for pedestrians	The woman wearing silver pants , pink bellbottoms and a pink scarf is riding a bike	2.5	NEUTRAL
 528	A person , who is riding a bike , is wearing gear which is black	A biker is wearing gear which is black	4.7	ENTAILMENT
@@ -231,8 +231,8 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 538	One man is wearing a black helmet and pushing a bicycle	A biker is naked	2.6	NEUTRAL
 541	The man in a grey t-shirt is sitting on a rock in front of the waterfall	The man in a t-shirt dyed grey is sitting on a rock in front of a waterfall	4.9	ENTAILMENT
 542	The man in a grey t-shirt is sitting on a rock in front of the waterfall	There is no man in a grey t-shirt sitting on a rock in front of the waterfall	3.5	CONTRADICTION
-545	A woman is standing and isn 't looking at the waterfall	A woman is sitting and looking at the waterfall	3.1	NEUTRAL
-548	A woman is standing and isn 't looking at the waterfall	The man in a grey t-shirt is sitting on a rock in front of the waterfall	2.5	NEUTRAL
+545	A woman is standing and isn ' t looking at the waterfall	A woman is sitting and looking at the waterfall	3.1	NEUTRAL
+548	A woman is standing and isn ' t looking at the waterfall	The man in a grey t-shirt is sitting on a rock in front of the waterfall	2.5	NEUTRAL
 550	The man in a t-shirt dyed grey is sitting on a rock in front of a waterfall	A woman is sitting and looking at the waterfall	3.1	NEUTRAL
 551	There is no man in a grey t-shirt sitting on a rock in front of the waterfall	A woman is sitting and looking at the waterfall	1.9	NEUTRAL
 552	A woman is sitting and looking at the waterfall	A rocker is sitting with a t-shirt that has a man over a grey waterfall on the front	2.5	NEUTRAL
@@ -246,7 +246,7 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 568	A dog that has a brown and white coat is sitting in shallow water	A dog that has a brown and white coat is trotting through shallow water	4.1	NEUTRAL
 570	A white and brown dog is walking through the water with difficulty	A white and brown dog is pacing through the water with difficulty	4.5	ENTAILMENT
 581	A group of boys are quiet in front of a large door made of wood	A group of boys are playing with a ball in front of a large door made of wood	3.5	NEUTRAL
-586	The children aren 't playing in front of a large door	A group of boys are playing with a ball in front of a large door made of wood	3.4	NEUTRAL
+586	The children aren ' t playing in front of a large door	A group of boys are playing with a ball in front of a large door made of wood	3.4	NEUTRAL
 587	A bunch of boys are playing with a ball in front of a large door made of wood	The children are playing in front of a large door	3.4	ENTAILMENT
 588	The children are playing in front of a large door	A group of boys are quiet in front of a large door made of wood	3.4	NEUTRAL
 597	A black , red , white and pink dress is being worn by a woman	A woman is taking off a cloak , which is very large , and revealing extravagant apparel	2.8	NEUTRAL
@@ -257,7 +257,7 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 605	A young lady with light brown hair is wearing a red necklace , a sweatshirt and earrings and is smiling	A red sweatshirt with a smiling lady upon it is suited to be worn with light brown hair , earrings and a necklace	3.3	NEUTRAL
 606	A lady of young age , with light brown hair , is wearing a red necklace , a sweatshirt and earrings and is smiling	A teenage girl is wearing beads that are red	3.1	NEUTRAL
 609	A young lady with light brown hair is wearing a red necklace , a sweatshirt and earrings and is smiling	The teenage girl is wearing beads that are red	2.4	NEUTRAL
-611	The girl likes red and isn 't wearing beads for teenagers	A young lady with light brown hair is wearing a red necklace , a sweatshirt and earrings and is smiling	2.3	NEUTRAL
+611	The girl likes red and isn ' t wearing beads for teenagers	A young lady with light brown hair is wearing a red necklace , a sweatshirt and earrings and is smiling	2.3	NEUTRAL
 617	A fearful little boy is on a climbing wall	A fearful little boy is on the ground	3.4	NEUTRAL
 621	A boy is climbing up a wall artificially built for climbing and is attached to a rope	A climbing boy rescues the fearful cat from over the wall	2.2	NEUTRAL
 622	A fearful little boy is on a climbing wall	A boy is effortlessly climbing up a wall artificially built for climbing and is attached to a rope	4.1	NEUTRAL
@@ -277,14 +277,14 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 648	A person is climbing a rock with a rope , which is pink	One man is climbing the cliff with a rope	4.1	ENTAILMENT
 649	A person is climbing a rock with a rope , which is pink	One man is descending a cliff with a rope	2.8	NEUTRAL
 650	A person is climbing a rock with a rope , which is pink	A social climber is tying a man to a cliff with a rope	2.685	NEUTRAL
-653	A young boy isn 't climbing a wall made of rock	The young boy is climbing the wall made of rock	4.1	CONTRADICTION
+653	A young boy isn ' t climbing a wall made of rock	The young boy is climbing the wall made of rock	4.1	CONTRADICTION
 655	A young child is climbing a rock climbing wall which is indoors	A young kid is climbing a rock climbing wall which is indoors	4.7	ENTAILMENT
 657	A young child is climbing a rock climbing wall which is indoors	A child is indoors watching a program about some young climbers on a rock wall .	3.2	NEUTRAL
 660	A child is indoors watching a program about some young climbers on a rock wall .	The young boy is climbing the wall made of rock	3.4	NEUTRAL
 661	One young boy is climbing a wall made of rock	A young child is climbing a rock climbing wall which is indoors	4.3	NEUTRAL
 663	A young climber is making a rock wall for the boys	A young child is climbing a rock climbing wall which is indoors	2.9	NEUTRAL
-668	The cyclist is performing a trick in the air	The cyclist isn 't performing a trick in the air	3.8	CONTRADICTION
-671	One man is doing a bicycle trick in midair	The cyclist isn 't performing a trick in the air	2.9	NEUTRAL
+668	The cyclist is performing a trick in the air	The cyclist isn ' t performing a trick in the air	3.8	CONTRADICTION
+671	One man is doing a bicycle trick in midair	The cyclist isn ' t performing a trick in the air	2.9	NEUTRAL
 672	One man is doing a bicycle trick in midair	The air is tricking a performing cyclist	3	NEUTRAL
 676	A dog , which is black , and a white one are staring at each other in the street	A dog , which is black , and another one , which is white , are staring at each other in the street	4.9	ENTAILMENT
 678	A dog , which is black , and a white one are staring at each other in the street	One white dog is staring at the black street	3.1	NEUTRAL
@@ -309,9 +309,9 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 727	A man with a camera is studying the subject	There is no man with a camera studying the subject	3.6	CONTRADICTION
 728	A man with a camera is studying the subject	The study subject is a camera man	3.6	NEUTRAL
 729	The man with the dyed purple hat is operating a camera that makes videos	The man in the purple hat is operating a camera that makes videos	4.9	ENTAILMENT
-730	The man in the purple hat isn 't operating a camera that makes videos	The man in the purple hat is operating a camera that makes videos	3.4	CONTRADICTION
+730	The man in the purple hat isn ' t operating a camera that makes videos	The man in the purple hat is operating a camera that makes videos	3.4	CONTRADICTION
 731	The man with the dyed purple hat is operating a camera that makes videos	A man with a camera is studying the subject	3.4	NEUTRAL
-732	A man with a camera is studying the subject	The man in the purple hat isn 't operating a camera that makes videos	3.2	NEUTRAL
+732	A man with a camera is studying the subject	The man in the purple hat isn ' t operating a camera that makes videos	3.2	NEUTRAL
 733	The man in the purple hat is operating a camera that makes videos	The subject is being studied by a man with a camera	3.6	NEUTRAL
 734	The man in the purple hat is operating a camera that makes videos	There is no man with a camera studying the subject	3.2	NEUTRAL
 735	The study subject is a camera man	The man in the purple hat is operating a camera that makes videos	2.8	NEUTRAL
@@ -338,7 +338,7 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 777	A woman , who is old , is far from a white dog	A woman and a dog are sitting on a tree stump	2.4	NEUTRAL
 783	A man is watering the grass and excitedly playing with a dog	A dog is excitedly playing with water in the grass	3.5	NEUTRAL
 784	The dog is biting some droplets of water	The dog is snapping at some droplets of water	4.5	ENTAILMENT
-785	The dog is snapping at some droplets of water	The dog isn 't snapping at some droplets of water	4	CONTRADICTION
+785	The dog is snapping at some droplets of water	The dog isn ' t snapping at some droplets of water	4	CONTRADICTION
 789	A dog is excitedly playing with water in the grass	A snap is depicting some water falling in droplets on the dog	2.9	NEUTRAL
 791	The dog is snapping at some droplets of water	There is no dog excitedly playing with water in the grass	3.5	NEUTRAL
 792	A man is watering the grass and excitedly playing with a dog	The dog is snapping at some droplets of water	2.4	NEUTRAL
@@ -350,7 +350,7 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 804	Two people are in the snow , wearing clothes that provide camouflage	Two people are walking two dogs with golden coats in the snow	2.7	NEUTRAL
 811	There is no girl wearing a t-shirt and keeping her mouth open	A girl from Asia , in front of a brick window , looks surprised	2.2	NEUTRAL
 812	A girl from Asia , in front of a window made of bricks , looks surprised	A girl is wearing a t-shirt and has her mouth open .	2.4	NEUTRAL
-813	A girl from Asia , in front of a brick window , doesn 't look surprised	A girl is wearing a t-shirt and has her mouth open .	2.1	NEUTRAL
+813	A girl from Asia , in front of a brick window , doesn ' t look surprised	A girl is wearing a t-shirt and has her mouth open .	2.1	NEUTRAL
 820	A person in biking gear is standing steadily in front of some mountains	The mountain gear is steadily placed in front of the standing biker	3.6	NEUTRAL
 822	There is no person in bike gear standing steadily in front of the mountains	A group of people is equipped with protective gear	2.3	NEUTRAL
 824	A group of people is equipped with gear used for protection	A person in biking gear is standing steadily in front of some mountains	2	NEUTRAL
@@ -378,12 +378,12 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 869	An ice skating rink placed outdoors is full of people	An ice skater is outdoors performing on a rink full of people	4	NEUTRAL
 870	The ice skating rink placed outdoors is full of people	A lot of people are in an ice skating park	4.2	ENTAILMENT
 872	A lot of people are in an ice skating park	An ice skater is outdoors performing on a rink full of people	3.5	NEUTRAL
-874	An ice skating rink placed outdoors is full of people	There aren 't many people in the ice skating park	3.6	CONTRADICTION
+874	An ice skating rink placed outdoors is full of people	There aren ' t many people in the ice skating park	3.6	CONTRADICTION
 876	An ice skating rink placed outdoors is full of people	A lot of people are in an ice skating park	4.5	ENTAILMENT
 878	A girl in a uniform , which is blue , is lowering her arm	A girl in a uniform , which is blue , is raising her arm .	3.4	NEUTRAL
 879	A girl is raising a blue uniform with her arm	A girl in a uniform , which is blue , is raising her arm .	3.3	NEUTRAL
 880	The girl in the blue and white uniform is cheering	Some cheers are being performed by the girl in the blue and white uniform	4.9	ENTAILMENT
-881	The girl in the blue and white uniform isn 't cheering	The girl in the blue and white uniform is cheering	4.1	CONTRADICTION
+881	The girl in the blue and white uniform isn ' t cheering	The girl in the blue and white uniform is cheering	4.1	CONTRADICTION
 883	Some cheers are being performed by the girl in the blue and white uniform	A girl in a uniform , which is blue , is raising her arm .	4.2	NEUTRAL
 887	The girl in the blue and white uniform is cheering	A girl in a uniform , which is blue , is lowering her arm	3.4	NEUTRAL
 888	A girl is raising a blue uniform with her arm	The girl in the blue and white uniform is cheering	3.2	NEUTRAL
@@ -403,8 +403,8 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 920	Two people are kissing near a crowd	A lady is being kissed by a man	4.1	NEUTRAL
 922	Two people are kissing near a crowd	A woman is being kissed by a man	4	NEUTRAL
 927	The young girl is blowing a bubble that is huge	The young girl is blowing a bubble that is very small	3.7	CONTRADICTION
-931	The young girl is blowing a bubble that is huge	The girl in a dyed red shirt isn 't blowing a bubble	3.3	NEUTRAL
-932	A bubble blew , dyeing the girl 's shirt red .	The young girl is blowing a bubble that is huge	3	NEUTRAL
+931	The young girl is blowing a bubble that is huge	The girl in a dyed red shirt isn ' t blowing a bubble	3.3	NEUTRAL
+932	A bubble blew , dyeing the girl ' s shirt red .	The young girl is blowing a bubble that is huge	3	NEUTRAL
 935	A young child is barefoot and is walking past a puddle full of mud	A young child is wearing green boots and playing in a puddle full of mud	3.5	NEUTRAL
 936	A young child is wearing green boots and playing in a puddle full of mud	Some green boots in a puddle full of mud are targeted by a playful young child wearing a scarf	3	NEUTRAL
 940	A young child is wearing green boots and playing in a puddle full of mud	A little boy is jumping into a puddle in the street	3.8	NEUTRAL
@@ -454,7 +454,7 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 1033	A person who is practicing snowboarding falls from the air	A person who is practicing snowboarding jumps into the air	3.5	NEUTRAL
 1037	The snowboarder is leaping over white snow	A leap over white snow is greatly appealing to the snowboarders	3.2	NEUTRAL
 1038	The snowboarder is leaping fearlessly over white snow	A person who is practicing snowboarding jumps into the air	3.9	ENTAILMENT
-1043	A practicing jumper is tossing a person 's snowboard into the air	The snowboarder is leaping over white snow	2.8	NEUTRAL
+1043	A practicing jumper is tossing a person ' s snowboard into the air	The snowboarder is leaping over white snow	2.8	NEUTRAL
 1044	The snowboarder is leaping over white snow	A person who is practicing snowboarding jumps into the air	4.1	ENTAILMENT
 1045	A dog is near a ball colored in red , which is in the air	A dog is near the red ball in the air	4.9	ENTAILMENT
 1046	A dog is near the red ball in the air	A dog is far from the red ball in the air	3.6	CONTRADICTION
@@ -470,9 +470,9 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 1061	A man is riding a motorbike in the event related to motocross	A person is riding a motorbike in the event related to motocross	4.4	ENTAILMENT
 1064	The person is riding a motorbike on a sandy track	A man is riding a motorbike in the event related to motocross	3.6	NEUTRAL
 1065	There is no person riding a motorbike in the event related to motocross	The person is riding a motorbike on a sandy track	3.565	NEUTRAL
-1068	A person is riding a motorbike in the event related to motocross	The person isn 't riding a motorbike on a sandy track	3.3	NEUTRAL
+1068	A person is riding a motorbike in the event related to motocross	The person isn ' t riding a motorbike on a sandy track	3.3	NEUTRAL
 1069	A motorbike rider is jumping over a person on a sandy track	A person is riding a motorbike in the event related to motocross	3.3	NEUTRAL
-1074	The young girl with a pink shirt is peacefully lying on the grass	The young girl with a pink shirt isn 't peacefully lying on the grass	4.5	CONTRADICTION
+1074	The young girl with a pink shirt is peacefully lying on the grass	The young girl with a pink shirt isn ' t peacefully lying on the grass	4.5	CONTRADICTION
 1076	A girl is wearing a pink shirt with white writing on it and is lying in the grass	The young girl with a shirt dyed pink is peacefully lying on the grass	4.1	NEUTRAL
 1080	The young girl with a pink shirt is peacefully lying on the grass	A girl is naked and is standing on the grass	3.3	NEUTRAL
 1082	A dog of large size is running on the grass with a tennis ball in its mouth	A large dog is running on the grass with a tennis ball in its mouth	4.7	ENTAILMENT
@@ -501,7 +501,7 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 1122	There is no dog riding a skateboard	A dog is riding a skateboard	3.8	CONTRADICTION
 1128	A fish is hunting for a turtle in the sea	A sea turtle is hunting for fish	3.9	NEUTRAL
 1129	The turtle is following the red fish	The turtle is following the fish	4.6	ENTAILMENT
-1133	A sea turtle is hunting for fish	The turtle isn 't following the fish	3.2	NEUTRAL
+1133	A sea turtle is hunting for fish	The turtle isn ' t following the fish	3.2	NEUTRAL
 1135	The turtle is following the fish	A sea turtle is hunting for food	3.9	NEUTRAL
 1145	A woman is dipping a shrimp in batter	The car is being driven by a man	1.4	NEUTRAL
 1147	A woman is dipping a shrimp in batter	A man is driving a car	1	NEUTRAL
@@ -657,7 +657,7 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 1501	A man is playing a guitar	A man is playing guitar	4.9	ENTAILMENT
 1504	Three men are practicing karate in a field	Three men are practicing karate outdoors	4.5	ENTAILMENT
 1505	Three men are practicing karate in a field	Three men are practicing karate in a gym	3.7	NEUTRAL
-1509	Three boys in karate costumes aren 't fighting	Three men are practicing karate in a field	2.4	NEUTRAL
+1509	Three boys in karate costumes aren ' t fighting	Three men are practicing karate in a field	2.4	NEUTRAL
 1511	Some women are holding each other in a circle and dancing	A few women are holding each other and dancing together	3.9	ENTAILMENT
 1513	Two men are playing table tennis	Two men are playing ping pong	4.3	ENTAILMENT
 1514	Two men are playing table football	Two men are playing table tennis	2.8	CONTRADICTION
@@ -694,14 +694,14 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 1576	A man is playing the guitar owner	A person is playing a trumpet	2.5	NEUTRAL
 1580	A badger , which is shrewd , is digging the earth	A badger is shrewdly digging the earth	4.5	ENTAILMENT
 1582	A badger , which is shrewd , is digging the earth	The badger is burrowing a hole	4	ENTAILMENT
-1585	A badger is shrewdly digging the earth	The badger isn 't burrowing a hole	2.7	CONTRADICTION
+1585	A badger is shrewdly digging the earth	The badger isn ' t burrowing a hole	2.7	CONTRADICTION
 1586	A badger is shrewdly digging the earth	The badger is burrowing a hole	4.2	ENTAILMENT
 1587	Some liquid is being poured into a pan by a man	A man is pouring liquid into a pot	4.6	ENTAILMENT
 1588	A man is pouring liquid into a pot	There is no man pouring liquid into a pot	3.7	CONTRADICTION
 1591	The chef is carefully pouring oil in the pan	A man is pouring liquid into a pot	3.2	NEUTRAL
 1592	A man is pouring liquid into a pot	The chef is carefully drying the oil from the pan	2.3	NEUTRAL
 1595	A man is pouring liquid into a pot	The chef is carefully pouring some oil into a pan	4.1	NEUTRAL
-1599	The man is operating a stenograph	The man isn 't operating a stenograph	3.3	CONTRADICTION
+1599	The man is operating a stenograph	The man isn ' t operating a stenograph	3.3	CONTRADICTION
 1601	The man is cautiously operating a stenograph	A man is typing on a machine used for stenography	4.2	NEUTRAL
 1604	The man is typing on a machine used for stenography	The man is operating a stenograph	4.8	ENTAILMENT
 1606	The man is operating a stenograph	A man is typing on a machine used for stenography	4.7	ENTAILMENT
@@ -712,7 +712,7 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 1614	The man is cautiously feeding a mouse to the snake	One man is feeding a mouse to the snake	4.6	ENTAILMENT
 1615	No snake is being fed a mouse by a man	The man is cautiously feeding a mouse to the snake	3.4	CONTRADICTION
 1618	A guy is cheerfully playing with the footbag	A guy is cheerfully playing with a footbag	4.9	ENTAILMENT
-1621	The man isn 't playing the piano	The man is playing a piano	3.6	CONTRADICTION
+1621	The man isn ' t playing the piano	The man is playing a piano	3.6	CONTRADICTION
 1625	The man is playing a piano	There is a guy cheerfully playing with a footbag	1.5	NEUTRAL
 1626	The man is playing a piano	A guy is cheerfully playing with a footbag	1.3	NEUTRAL
 1627	A man is mixing a few ingredients in a bowl	Some ingredients are being mixed in a bowl by a person	4.5	ENTAILMENT
@@ -722,19 +722,19 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 1635	Some ingredients are being mixed in a bowl by a person	A woman is bowling two eggs to a break dancer	1.6	NEUTRAL
 1639	A woman is breaking two eggs in a bowl	Some ingredients are being mixed in a bowl by a person	3.3	NEUTRAL
 1640	The girl is recklessly jumping onto a car	The girl is recklessly jumping onto a vehicle	4.6	ENTAILMENT
-1641	The girl is recklessly jumping onto a car	The girl isn 't jumping onto the car recklessly	3.6	CONTRADICTION
+1641	The girl is recklessly jumping onto a car	The girl isn ' t jumping onto the car recklessly	3.6	CONTRADICTION
 1643	One young lady is jumping on the car	One girl is jumping on the car	4.9	ENTAILMENT
 1646	The girl is recklessly jumping onto a car	One young lady is jumping on the car	4.4	ENTAILMENT
 1647	The girl is recklessly jumping onto a car	There is no girl jumping into the car	3.6	NEUTRAL
 1648	A girl is on a jumping car	The girl is recklessly jumping onto a car	4	NEUTRAL
 1649	The girl is recklessly jumping onto a vehicle	One girl is jumping on the car	4.2	NEUTRAL
-1650	The girl isn 't jumping onto the car recklessly	One girl is jumping on the car	3.3	NEUTRAL
+1650	The girl isn ' t jumping onto the car recklessly	One girl is jumping on the car	3.3	NEUTRAL
 1651	A car is riskily jumping over a girl	One girl is jumping on the car	2.9	NEUTRAL
 1652	The girl is recklessly jumping onto a car	One girl is jumping on the car	4.4	ENTAILMENT
 1653	One woman is slowly peeling a potato	One woman is peeling a potato	4.7	ENTAILMENT
 1655	A woman is throwing a potato peel	One woman is peeling a potato	3.6	NEUTRAL
-1657	The potato is being peeled by a woman	The potato isn 't being peeled by a woman	3.2	CONTRADICTION
-1659	One woman is peeling a potato	The potato isn 't being peeled by a woman	3.6	CONTRADICTION
+1657	The potato is being peeled by a woman	The potato isn ' t being peeled by a woman	3.2	CONTRADICTION
+1659	One woman is peeling a potato	The potato isn ' t being peeled by a woman	3.6	CONTRADICTION
 1660	One woman is slowly peeling a potato	The potato is being peeled by a woman	4.5	ENTAILMENT
 1661	There is no woman peeling a potato	The potato is being peeled by a woman	3.5	CONTRADICTION
 1663	The potato is being peeled by a woman	One woman is peeling a potato	4.8	ENTAILMENT
@@ -743,11 +743,11 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 1670	A boat is sailing peacefully over the water	The guitar is being played by a man	1	NEUTRAL
 1671	The guitar is being played by nobody	A boat is sailing peacefully over the water	1	NEUTRAL
 1673	A boat is sailing quietly over the water	The guitar is being played by the man	1	NEUTRAL
-1675	A boat 's sail is being reflected by the peaceful water	The guitar is being played by the man	1	NEUTRAL
+1675	A boat ' s sail is being reflected by the peaceful water	The guitar is being played by the man	1	NEUTRAL
 1677	The man is pouring oil on a few tomatoes	One person pours oil on a few tomatoes	4.6	ENTAILMENT
 1680	Some oil is being poured on the tomatoes by the man	The man is pouring some oil on the tomatoes	4.8	ENTAILMENT
 1682	The man is pouring some oil on the tomatoes	Somebody is pouring tomato oil on the man	2.4	NEUTRAL
-1687	The man is pouring some oil on the tomatoes	A man isn 't pouring oil on the tomatoes .	3	CONTRADICTION
+1687	The man is pouring some oil on the tomatoes	A man isn ' t pouring oil on the tomatoes .	3	CONTRADICTION
 1691	There is no milk being drunk by a cat	The milk is being drunk by a cat	3.7	CONTRADICTION
 1694	A kitten is drinking fresh milk	There is no kitten drinking milk	3.7	CONTRADICTION
 1697	There is no kitten drinking milk	The milk is being drunk by a cat	3.7	NEUTRAL
@@ -765,7 +765,7 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 1721	An onion is being cut by a man	A man is eating onion slices	3.2	NEUTRAL
 1723	A man is recklessly riding a horse	A person is recklessly riding a horse	4.2	ENTAILMENT
 1724	A man is recklessly riding a horse	There is no man recklessly riding a horse	4.1	CONTRADICTION
-1729	A man is recklessly riding a horse	The elephant isn 't being ridden by the woman	1.4	NEUTRAL
+1729	A man is recklessly riding a horse	The elephant isn ' t being ridden by the woman	1.4	NEUTRAL
 1733	A man is recklessly riding a horse	The elephant is being ridden by the woman	1	NEUTRAL
 1736	Somebody is playing the piano	The piano is being played by someone	5	ENTAILMENT
 1741	The piano is being played by someone	Nobody is feeding an animal	1	NEUTRAL
@@ -777,9 +777,9 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 1757	One woman is practicing with a flute	One woman is playing a flute	4.485	ENTAILMENT
 1759	A flute is being played by a girl	One woman is practicing with a flute	4.2	NEUTRAL
 1765	A boy is happily playing the piano	One boy is happily playing a piano	5	ENTAILMENT
-1766	The boy isn 't playing the piano happily	A boy is happily playing the piano	3.8	CONTRADICTION
+1766	The boy isn ' t playing the piano happily	A boy is happily playing the piano	3.8	CONTRADICTION
 1771	A boy is happily playing the piano	A piano is being played by a person	4.3	ENTAILMENT
-1772	A boy is happily playing the piano	A piano isn 't being played by a man	3.3	NEUTRAL
+1772	A boy is happily playing the piano	A piano isn ' t being played by a man	3.3	NEUTRAL
 1773	A boy is happily playing the piano	The piano player is being a tough man	2.1	NEUTRAL
 1776	A piano is being played by a man	The play is about a happy boy playing the piano	2.6	NEUTRAL
 1777	A boy is happily playing the piano	A piano is being played by a man	3.8	NEUTRAL
@@ -796,23 +796,23 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 1808	There is no man playing the guitar loudly	A flute is being played by a man	1.8	NEUTRAL
 1809	The loud man is not allowed to play the guitar	A flute is being played by a man	2.8	NEUTRAL
 1812	A man is playing the guitar loudly	A flute is being played by a man	3.1	NEUTRAL
-1814	The person isn 't dicing up an orange pepper	The person is dicing up a pepper which is orange	3.3	CONTRADICTION
+1814	The person isn ' t dicing up an orange pepper	The person is dicing up a pepper which is orange	3.3	CONTRADICTION
 1815	The person is dicing up a pepper which is orange	The orange colored dices are being cast by a cook to win the pepper	2.9	NEUTRAL
 1818	Some bells are ringing near a cook slicing peppers	A cook is slicing some bell peppers	3.1	NEUTRAL
 1820	There is no cook slicing some bell peppers	The person is dicing up a pepper which is orange	3.4	CONTRADICTION
 1822	A cook is slicing some bell peppers	An orange pepper is being diced up by a person	4.1	NEUTRAL
-1823	The person isn 't dicing up an orange pepper	A cook is slicing some bell peppers	3.5	NEUTRAL
+1823	The person isn ' t dicing up an orange pepper	A cook is slicing some bell peppers	3.5	NEUTRAL
 1825	The person is dicing up a pepper which is orange	A cook is slicing some bell peppers	4.3	NEUTRAL
 1829	Some tofu is being sliced by one woman	Tofu is being sliced by a woman	4.9	ENTAILMENT
-1830	Tofu is being sliced by a woman	Tofu isn 't being sliced by a woman	3.5	CONTRADICTION
+1830	Tofu is being sliced by a woman	Tofu isn ' t being sliced by a woman	3.5	CONTRADICTION
 1832	A girl is cutting butter into two pieces	Some tofu is being sliced by one woman	2.2	NEUTRAL
 1840	The girl , who is little , is combing her hair into a pony tail .	The girl , who is little , is ruffling her hair	3.5	NEUTRAL
-1841	A girl is combing the hair of a little pony 's tail	The girl , who is little , is combing her hair into a pony tail .	2.8	NEUTRAL
+1841	A girl is combing the hair of a little pony ' s tail	The girl , who is little , is combing her hair into a pony tail .	2.8	NEUTRAL
 1842	One man is sitting steadily on the chair	One man is sitting on the chair	4.4	ENTAILMENT
 1844	The girl , who is little , is combing her hair into a pony tail .	One man is sitting steadily on the chair	1	NEUTRAL
 1846	The girl , who is little , is carefully combing her hair into a pony tail	One man is sitting on the chair	1	NEUTRAL
 1849	One man is sitting on the chair	The girl , who is little , is combing her hair into a pony tail .	1.1	NEUTRAL
-1851	The man is carelessly smearing butter on a slice of garlic bread	The man isn 't smearing butter on bread	3.7	CONTRADICTION
+1851	The man is carelessly smearing butter on a slice of garlic bread	The man isn ' t smearing butter on bread	3.7	CONTRADICTION
 1852	A man is spreading butter on a piece of bread which is big	A piece of bread , which is big , is having butter spread upon it by a man OR A piece of bread , which is big , is being spread with butter by a man	4.7	ENTAILMENT
 1853	A man is removing the butter from a piece of bread which is big	A man is spreading butter on a piece of bread which is big	4.1	NEUTRAL
 1854	The man is carelessly smearing butter on a slice of garlic bread	A piece of bread , which is big , is having butter spread upon it by a man OR A piece of bread , which is big , is being spread with butter by a man	4.1	NEUTRAL
@@ -820,9 +820,9 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 1869	A parrot is speaking	The parrot is silent in front of the microphone	2.9	CONTRADICTION
 1873	Some kittens are hungry	Some kittens are eating	3.7	NEUTRAL
 1874	A man is eating near the kittens	Some kittens are eating	2.9	NEUTRAL
-1876	The food on the trays isn 't being eaten by the kittens	The food on the trays is being eaten by the kittens	3.3	CONTRADICTION
+1876	The food on the trays isn ' t being eaten by the kittens	The food on the trays is being eaten by the kittens	3.3	CONTRADICTION
 1878	The kittens are eating the food on the trays	Some kittens are eating	4.7	ENTAILMENT
-1879	The food on the trays isn 't being eaten by the kittens	Some kittens are eating	2.8	CONTRADICTION
+1879	The food on the trays isn ' t being eaten by the kittens	Some kittens are eating	2.8	CONTRADICTION
 1882	Some kittens are hungry	The food on the trays is being eaten by the kittens	2.9	NEUTRAL
 1884	The food on the trays is being eaten by the kittens	Some kittens are eating	4.4	ENTAILMENT
 1886	A person is singing and playing the guitar	There is no person singing and playing the guitar	4.1	CONTRADICTION
@@ -852,9 +852,9 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 1946	One small child is greedily drinking water from the cup	One small child is drinking water from the cup	4.8	ENTAILMENT
 1948	The kitten is eagerly drinking some milk from the bowl	One small child is greedily drinking water from the cup	1.6	NEUTRAL
 1949	The kitten is eagerly drinking some milk from the bowl	One small child is filling the cup with water	1.4	NEUTRAL
-1954	The band is singing	The band isn 't singing	3.9	CONTRADICTION
+1954	The band is singing	The band isn ' t singing	3.9	CONTRADICTION
 1955	The singer is leaving the band	The band is singing	2.9	NEUTRAL
-1961	A woman is putting on makeup carefully	The band isn 't singing	1	NEUTRAL
+1961	A woman is putting on makeup carefully	The band isn ' t singing	1	NEUTRAL
 1963	A woman is putting on makeup carefully	The band is singing	1	NEUTRAL
 1967	The woman is happily playing a guitar , which is acoustic , and singing	The woman is playing a guitar , which is acoustic , and singing	4.5	ENTAILMENT
 1969	The singer is playing the guitar at an acoustic concert for a woman	The woman is playing a guitar , which is acoustic , and singing	3.9	NEUTRAL
@@ -869,7 +869,7 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 1988	A young woman is playing the guitar	A girl is playing the guitar	4.5	ENTAILMENT
 1989	A girl is playing the guitar	A girl is not playing the guitar	3.3	CONTRADICTION
 1991	One man is intensely playing a guitar	The man is intensely playing the guitar	4.8	ENTAILMENT
-1992	The man is intensely playing the guitar	The man isn 't intensely playing the guitar	2.9	CONTRADICTION
+1992	The man is intensely playing the guitar	The man isn ' t intensely playing the guitar	2.9	CONTRADICTION
 1993	The man is intensely playing the guitar	The intense man is a guitar player	3.7	NEUTRAL
 1994	A girl is playing the guitar	One man is intensely playing a guitar	3.2	NEUTRAL
 1996	The intense man is a guitar player	A girl is playing the guitar	2.8	NEUTRAL
@@ -884,21 +884,21 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 2011	A man is riding the animal	A man is riding a motorbike	3	NEUTRAL
 2012	The man is on the ride with the horse	A man is riding a motorbike	1.9	NEUTRAL
 2014	A magic trick is being performed by the magician	The man is doing a magic trick	4.3	ENTAILMENT
-2015	The man isn 't doing a magic trick	The man is doing a magic trick	3.6	CONTRADICTION
+2015	The man isn ' t doing a magic trick	The man is doing a magic trick	3.6	CONTRADICTION
 2016	The man is doing a magic trick	The kid , who is doing magic , is tricking an old man	3.4	NEUTRAL
 2018	A man is dangerously throwing knives at a tree	A man is dangerously extracting knives from a tree	3.6	NEUTRAL
 2020	A man is dangerously throwing knives at the tree	The man is doing a magic trick	2.5	NEUTRAL
 2023	A man is dangerously throwing knives at a tree	A magic trick is being performed by the magician	2.1	NEUTRAL
-2024	A man is dangerously throwing knives at a tree	The man isn 't doing a magic trick	2	NEUTRAL
+2024	A man is dangerously throwing knives at a tree	The man isn ' t doing a magic trick	2	NEUTRAL
 2025	The kid , who is doing magic , is tricking an old man	A man is dangerously throwing knives at a tree	1.5	NEUTRAL
 2027	The guitar is being played by a lady	The guitar is being played by a girl	4.3	NEUTRAL
 2029	The guitar is being played by a lady	The play for the ladies requires a guitar	2.6	NEUTRAL
 2030	The man is practicing the guitar	The person is practicing the guitar	4.6	ENTAILMENT
-2035	The practicing person doesn 't like the guitar	The guitar is being played by a lady	3.1	NEUTRAL
+2035	The practicing person doesn ' t like the guitar	The guitar is being played by a lady	3.1	NEUTRAL
 2037	The person is practicing the guitar	The guitar is being sold by a lady	2	NEUTRAL
 2038	The person is practicing the guitar	The play for the ladies requires a guitar	2.3	NEUTRAL
 2040	The boy is enthusiastically playing in the mud	The boy is playing in the mud	4.5	ENTAILMENT
-2041	The boy is playing in the mud	The boy isn 't playing in the mud	3.4	CONTRADICTION
+2041	The boy is playing in the mud	The boy isn ' t playing in the mud	3.4	CONTRADICTION
 2045	A cat is playing with a device	A playing device is amusing a cat	4.085	NEUTRAL
 2047	The boy is playing in the mud	There is no cat playing with a device	1.2	NEUTRAL
 2049	A cat is playing with a device	The boy is enthusiastically playing in the mud	1	NEUTRAL
@@ -913,7 +913,7 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 2067	One man is talking to a girl with an internet camera	One man is chatting with a girl with an internet camera	5	ENTAILMENT
 2068	A man is ignoring a girl via an internet camera	One man is talking to a girl with an internet camera	4.1	NEUTRAL
 2070	A man is ignoring a girl via an internet camera	A boy in his teens is talking to a girl with a webcam	3.2	NEUTRAL
-2072	One man is talking to a girl with an internet camera	A boy in his teens isn 't talking to a girl with a webcam	3	NEUTRAL
+2072	One man is talking to a girl with an internet camera	A boy in his teens isn ' t talking to a girl with a webcam	3	NEUTRAL
 2073	One man is talking to a girl with an internet camera	The teens are talking to a boy and a girl with a webcam	3.1	NEUTRAL
 2075	Eggs are being strongly whisked in a bowl by a person	A person is strongly whisking eggs in a bowl	4.8	ENTAILMENT
 2076	A person is strongly whisking eggs in a bowl	A person is removing eggs from a bowl	2.6	NEUTRAL
@@ -941,14 +941,14 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 2109	A rope is being climbed by a man	A man is eating a carrot sliced by a machine	1	NEUTRAL
 2112	A man is slicing the carrot with a machine	A man is being roped by a climber	1.2	NEUTRAL
 2113	A rope is being climbed by a man	A man is slicing the carrot with a machine	1.3	NEUTRAL
-2115	The cat is licking milk from a saucer	The cat isn 't licking milk from a saucer	3.4	CONTRADICTION
+2115	The cat is licking milk from a saucer	The cat isn ' t licking milk from a saucer	3.4	CONTRADICTION
 2117	Some milk is being hungrily drunk by a cat	The cat is hungrily drinking milk	4.8	ENTAILMENT
 2118	There is no cat hungrily drinking milk	The cat is hungrily drinking milk	3.7	CONTRADICTION
-2119	The cat is hungrily drinking milk	Drinking milk helps a cat 's hunger	3.3	NEUTRAL
+2119	The cat is hungrily drinking milk	Drinking milk helps a cat ' s hunger	3.3	NEUTRAL
 2121	The cat is licking milk from a saucer	There is no cat hungrily drinking milk	2.6	CONTRADICTION
-2122	Drinking milk helps a cat 's hunger	The cat is licking milk from a saucer	3.4	NEUTRAL
+2122	Drinking milk helps a cat ' s hunger	The cat is licking milk from a saucer	3.4	NEUTRAL
 2123	The cat is licking a shallow dish full of milk	The cat is hungrily drinking milk	4.1	NEUTRAL
-2124	The cat isn 't licking milk from a saucer	The cat is hungrily drinking milk	4.3	NEUTRAL
+2124	The cat isn ' t licking milk from a saucer	The cat is hungrily drinking milk	4.3	NEUTRAL
 2125	The cat is hungrily drinking milk	A lick of milk sauce is being given to the cat	3.7	NEUTRAL
 2132	A baby is playing with a dog	A small boy is scolding a dog	3	NEUTRAL
 2136	A woman is peeling a potato	A potato is being peeled by a woman	5	ENTAILMENT
@@ -1020,7 +1020,7 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 2277	A dog is biting a can	A dog is opening a jar of food	3.4	NEUTRAL
 2281	A dog is opening a can of food	A dog is biting a can	3.3	ENTAILMENT
 2282	A cat is playing with a watermelon	One cat is playing with a watermelon	4.9	ENTAILMENT
-2287	A cat is playing with a watermelon	The cat isn 't playing with a watermelon	3.7	CONTRADICTION
+2287	A cat is playing with a watermelon	The cat isn ' t playing with a watermelon	3.7	CONTRADICTION
 2288	One cat is playing with a watermelon	The cat is playing with a watermelon	5	ENTAILMENT
 2289	The cat is playing with a watermelon	There is no cat playing with a watermelon	3.4	CONTRADICTION
 2291	The boy is playing a guitar	A boy is playing a guitar	4.8	ENTAILMENT
@@ -1122,7 +1122,7 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 2530	A cat is eating some corn	The cat is eating some corn	5	ENTAILMENT
 2538	Someone is slicing a tomato	Nobody is slicing a tomato	3.9	CONTRADICTION
 2539	The person is quickly slicing a vegetable	The person is slicing a vegetable	4.6	ENTAILMENT
-2540	The person isn 't slicing a vegetable	The person is slicing a vegetable	4.085	CONTRADICTION
+2540	The person isn ' t slicing a vegetable	The person is slicing a vegetable	4.085	CONTRADICTION
 2543	Someone is cutting a tomato	The person is slicing a vegetable	4.6	ENTAILMENT
 2545	Someone is slicing a tomato	The person is slicing a vegetable	4.1	ENTAILMENT
 2549	There is no little girl playing the piano	A little girl is playing the piano	3.5	CONTRADICTION
@@ -1170,9 +1170,9 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 2643	Two boys on a couch are playing video games	Two boys are playing a video game	4.3	ENTAILMENT
 2650	The man is slicing vegetables	A woman is cutting a potato	3	NEUTRAL
 2651	The man is slicing vegetables	There is no woman slicing a potato	2.5	NEUTRAL
-2654	The lady is cracking an egg for the mixer	The lady isn 't cracking an egg for the mixer	2.9	CONTRADICTION
+2654	The lady is cracking an egg for the mixer	The lady isn ' t cracking an egg for the mixer	2.9	CONTRADICTION
 2655	The lady is carefully slicing up the meat	The lady is slicing up the meat	4.3	ENTAILMENT
-2656	The lady is slicing up the meat	The lady isn 't slicing up the meat	4.1	CONTRADICTION
+2656	The lady is slicing up the meat	The lady isn ' t slicing up the meat	4.1	CONTRADICTION
 2657	The lady is eating slices of meat	The lady is slicing up the meat	3.4	NEUTRAL
 2660	The lady is cracking an egg for the mixer	The lady is eating slices of meat	1.7	NEUTRAL
 2664	Some ferrets are climbing down from a shelf	Ferrets are climbing down from a shelf	4.9	ENTAILMENT
@@ -1336,8 +1336,8 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 2997	A woman is playing an electric guitar	A woman is playing a guitar which is electric	5	ENTAILMENT
 2998	There is no woman playing an electric guitar	A woman is playing an electric guitar	4.2	CONTRADICTION
 3005	There is no man in a suit standing at a microphone and singing	A man in a suit is standing at a microphone and singing	3.1	CONTRADICTION
-3007	The man on stage is singing into the microphone	The man on stage isn 't singing into the microphone	3.5	CONTRADICTION
-3010	The man on stage isn 't singing into the microphone	A man in a suit is standing at a microphone and singing	3.3	NEUTRAL
+3007	The man on stage is singing into the microphone	The man on stage isn ' t singing into the microphone	3.5	CONTRADICTION
+3010	The man on stage isn ' t singing into the microphone	A man in a suit is standing at a microphone and singing	3.3	NEUTRAL
 3014	A man in a suit is standing at a microphone and singing	The man on stage is singing into the microphone	4.3	ENTAILMENT
 3015	Some teenage girls are dancing for the camera	Some girls in their teens are dancing for the camera	4.6	ENTAILMENT
 3016	Some teenage girls are dancing for the camera	Some teenage girls are standing still in front of the camera	3.5	NEUTRAL
@@ -1383,7 +1383,7 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 3130	A baby is sneezing and scaring another baby	A baby is cheering another baby	3.3	NEUTRAL
 3132	A baby is crawling happily	A baby is cheering another baby	2.7	NEUTRAL
 3134	A baby is sitting	A baby is sneezing and scaring another baby	2.8	NEUTRAL
-3140	The monkey isn 't practicing martial arts	The monkey is practicing martial arts	3.5	CONTRADICTION
+3140	The monkey isn ' t practicing martial arts	The monkey is practicing martial arts	3.5	CONTRADICTION
 3150	A man is performing tricks with a soccer ball	A man is running away from the soccer ball	3.1	NEUTRAL
 3153	A man is performing tricks with a soccer ball	A man is powerfully kicking a soccer ball	3.9	NEUTRAL
 3156	A man is cutting a box	A box is being cut by a man	4.9	ENTAILMENT
@@ -1430,10 +1430,10 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 3261	A man is playing the guitar	A guitar is being played by a man	5	ENTAILMENT
 3262	A man is playing the guitar	A man is dropping the guitar	3.3	NEUTRAL
 3264	A man is playing the guitar	Nobody is playing the guitar	3.7	CONTRADICTION
-3271	The soccer player is not kicking the ball between somebody 's legs	A person is kicking a soccer ball between their feet	3.1	NEUTRAL
-3272	The soccer player is kicking the ball between somebody 's legs	A person is kicking a ball for a soccer game between somebody 's feet	4.2	ENTAILMENT
-3273	There is no person kicking a soccer ball between somebody 's feet	The soccer player is kicking the ball between somebody 's legs	3.8	CONTRADICTION
-3274	The soccer player is kicking the ball between somebody 's legs	A person is kicking a soccer ball between their feet	3.9	NEUTRAL
+3271	The soccer player is not kicking the ball between somebody ' s legs	A person is kicking a soccer ball between their feet	3.1	NEUTRAL
+3272	The soccer player is kicking the ball between somebody ' s legs	A person is kicking a ball for a soccer game between somebody ' s feet	4.2	ENTAILMENT
+3273	There is no person kicking a soccer ball between somebody ' s feet	The soccer player is kicking the ball between somebody ' s legs	3.8	CONTRADICTION
+3274	The soccer player is kicking the ball between somebody ' s legs	A person is kicking a soccer ball between their feet	3.9	NEUTRAL
 3277	The boy , who is young , is running through the ocean waves	The young boy is running through the ocean waves	5	ENTAILMENT
 3278	The young boy is running through the ocean waves	The young boy is not running through the ocean waves	3.8	CONTRADICTION
 3280	The boy , who is young , is running through the ocean waves	A child is running in and out of the ocean waves	4.4	ENTAILMENT
@@ -1491,7 +1491,7 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 3386	One panda is eating a bamboo cane	The panda is eating bamboo	4.6	ENTAILMENT
 3389	A panda bear is eating some bamboo	The panda is not eating bamboo	2.6	CONTRADICTION
 3395	The woman is stirring eggs in a bowl	The lady is stirring eggs in a bowl	4.9	ENTAILMENT
-3396	The woman is stirring eggs in a bowl	The woman isn 't stirring eggs in a bowl	3.9	CONTRADICTION
+3396	The woman is stirring eggs in a bowl	The woman isn ' t stirring eggs in a bowl	3.9	CONTRADICTION
 3397	Someone is beating an egg	The lady is stirring eggs in a bowl	3.9	NEUTRAL
 3400	Nobody is beating an egg	The woman is stirring eggs in a bowl	4.1	CONTRADICTION
 3405	A person is unfolding a tortilla	A person is folding a tortilla	3.1	CONTRADICTION
@@ -1529,9 +1529,9 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 3472	A man is thinking	There is no man thinking	3.5	CONTRADICTION
 3479	A man is thinking	A man is dancing	2.6	NEUTRAL
 3480	A cat with a white coat , perched on a small wooden cabinet , is looking outside the window	A white cat perched on a small wooden cabinet is looking outside the window	4.8	ENTAILMENT
-3484	The cat perched on the table isn 't looking out the window	The cat perched on the table is looking out the window	3.7	CONTRADICTION
+3484	The cat perched on the table isn ' t looking out the window	The cat perched on the table is looking out the window	3.7	CONTRADICTION
 3486	A white cat perched on a small wooden cabinet is looking outside the window	The cat perched on the table is looking curiously out the window	4	ENTAILMENT
-3487	A white cat perched on a small wooden cabinet is looking outside the window	The cat perched on the table isn 't looking out the window	3	NEUTRAL
+3487	A white cat perched on a small wooden cabinet is looking outside the window	The cat perched on the table isn ' t looking out the window	3	NEUTRAL
 3488	A white cat perched on a small wooden cabinet is looking outside the window	The cat is looking out the window at the table on the perch	3.8	ENTAILMENT
 3491	The cat perched on the table is looking out the window	Someone on a perch is looking at a small wooden cat that is on a white cabinet outside the window	2.9	NEUTRAL
 3492	A white cat perched on a small wooden cabinet is looking outside the window	The cat perched on the table is looking out the window	4	NEUTRAL
@@ -1751,7 +1751,7 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 3949	The men are fighting with their fists in a ring	Two men are fist fighting in a ring	4.8	ENTAILMENT
 3951	Two men are fist fighting in a ring	The men are fist fighting in a ring	4.6	ENTAILMENT
 3955	The boy is not riding a bike on the top of a metal fence	The boy is riding a bike on the top of a metal fence	3.5	CONTRADICTION
-3956	The boy is riding a bike on the top of a metal fence	The riders are fencing in a boy 's metal bike	2.6	NEUTRAL
+3956	The boy is riding a bike on the top of a metal fence	The riders are fencing in a boy ' s metal bike	2.6	NEUTRAL
 3957	The boy is riding a bike on the top of a fence made of metal	A biker is riding along the top of a fence	3.8	ENTAILMENT
 3958	The boy is not riding a bike on the top of a metal fence	A biker is riding along the top of a fence	2.9	NEUTRAL
 3961	A biker is riding away from a fence	The boy is riding a bike on the top of a metal fence	2.9	NEUTRAL
@@ -1775,7 +1775,7 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 4007	A man is climbing a rope	The man is not climbing up a rope	2.9	NEUTRAL
 4012	The woman is picking up a kangaroo that is little	The woman is picking up a baby kangaroo	4.5	ENTAILMENT
 4013	The woman is picking up a baby kangaroo	The woman is not picking up a baby kangaroo	3	CONTRADICTION
-4014	The woman is picking up a baby kangaroo	A kangaroo is picking up the woman 's baby	2.835	NEUTRAL
+4014	The woman is picking up a baby kangaroo	A kangaroo is picking up the woman ' s baby	2.835	NEUTRAL
 4017	The woman is picking up the kangaroo	The kangaroo is picking up the woman	3.8	CONTRADICTION
 4020	The woman is picking up a baby kangaroo	The kangaroo is picking up the woman	3	NEUTRAL
 4021	The woman is picking up a kangaroo that is little	The woman is picking up the kangaroo	4.6	ENTAILMENT
@@ -1843,8 +1843,8 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 4154	A man is playing a wooden flute	A wooden flute is being played by a man	5	ENTAILMENT
 4162	A man is playing a wooden flute	A man is playing the piano	3	NEUTRAL
 4163	The man is cleaning the drawing on the board	The man is erasing the drawing on the board	4.6	ENTAILMENT
-4165	The man is erasing the other man 's work from the board	The man is erasing the other man 's work from the panel	4.4	ENTAILMENT
-4168	The man is erasing the drawing on the board	The girl is erasing the other man 's work from the board	3.6	NEUTRAL
+4165	The man is erasing the other man ' s work from the board	The man is erasing the other man ' s work from the panel	4.4	ENTAILMENT
+4168	The man is erasing the drawing on the board	The girl is erasing the other man ' s work from the board	3.6	NEUTRAL
 4173	There is no woman cutting a vegetable	A woman is cutting a vegetable	3.2	CONTRADICTION
 4174	An eggplant is being sliced by a woman	A woman is slicing an eggplant	4.8	ENTAILMENT
 4176	An eggplant is being sliced by a woman	A woman is cutting a vegetable	4.1	ENTAILMENT
@@ -2129,14 +2129,14 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 4799	A boy is playing an instrument	A kid is playing guitar	4	NEUTRAL
 4800	A boy is not playing a guitar	A kid is playing guitar	3.6	NEUTRAL
 4802	A monkey is teasing a dog at the zoo	A dog is being teased by a monkey at the zoo	4.9	ENTAILMENT
-4805	A dog 's tail is being pulled by a monkey	A monkey is pulling a dog 's tail	4.9	ENTAILMENT
-4806	There is no monkey pulling a dog 's tail	A monkey is pulling a dog 's tail	3.4	CONTRADICTION
-4807	A monkey is pulling a dog 's tail	A dog is pulling a monkey 's tail	3.9	NEUTRAL
-4808	A monkey is teasing a dog at the zoo	A dog 's tail is being pulled by a monkey	4.3	NEUTRAL
-4810	A dog is pulling a monkey 's tail	A monkey is teasing a dog at the zoo	3.5	NEUTRAL
-4811	A dog is being teased by a monkey at the zoo	A monkey is pulling a dog 's tail	4.3	NEUTRAL
-4812	There is no monkey teasing a dog at the zoo	A monkey is pulling a dog 's tail	3.4	CONTRADICTION
-4813	A dog is teasing a monkey at the zoo	A monkey is pulling a dog 's tail	3.4	NEUTRAL
+4805	A dog ' s tail is being pulled by a monkey	A monkey is pulling a dog ' s tail	4.9	ENTAILMENT
+4806	There is no monkey pulling a dog ' s tail	A monkey is pulling a dog ' s tail	3.4	CONTRADICTION
+4807	A monkey is pulling a dog ' s tail	A dog is pulling a monkey ' s tail	3.9	NEUTRAL
+4808	A monkey is teasing a dog at the zoo	A dog ' s tail is being pulled by a monkey	4.3	NEUTRAL
+4810	A dog is pulling a monkey ' s tail	A monkey is teasing a dog at the zoo	3.5	NEUTRAL
+4811	A dog is being teased by a monkey at the zoo	A monkey is pulling a dog ' s tail	4.3	NEUTRAL
+4812	There is no monkey teasing a dog at the zoo	A monkey is pulling a dog ' s tail	3.4	CONTRADICTION
+4813	A dog is teasing a monkey at the zoo	A monkey is pulling a dog ' s tail	3.4	NEUTRAL
 4815	A person is slicing some ginger	A person is cutting some ginger	4.9	ENTAILMENT
 4817	A person is slicing an onion	An onion is being sliced by a person	5	ENTAILMENT
 4819	A person is cutting some ginger	An onion is being sliced by a person	2.8	NEUTRAL
@@ -2238,15 +2238,15 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 5012	A man is cutting an onion	An onion is being sliced by a woman	3.8	NEUTRAL
 5014	A man is chopping an onion	A woman is slicing an onion	3.5	NEUTRAL
 5015	There is no man cutting an onion	A woman is slicing an onion	3.6	NEUTRAL
-5017	A woman is painting a man 's face	A man 's face is being painted by a woman	4.9	ENTAILMENT
-5018	A woman is painting a man 's face	A woman is cleaning a man 's face	3.9	NEUTRAL
-5022	A woman is painting a man 's face	Makeup is being put on the man by the woman	4.1	ENTAILMENT
-5023	The woman is not putting makeup on the man	A woman is painting a man 's face	3.2	NEUTRAL
-5024	The woman is putting makeup on the man	A man 's face is being painted by a woman	4.5	ENTAILMENT
-5025	A woman is cleaning a man 's face	The woman is putting makeup on the man	2.7	NEUTRAL
-5026	A man is painting a woman 's face	The woman is putting makeup on the man	2.5	NEUTRAL
-5027	The woman is putting makeup on the man	A woman is painting a man 's face	4.4	ENTAILMENT
-5031	The man is talking on the telephone	The man isn 't talking on the telephone	3.3	CONTRADICTION
+5017	A woman is painting a man ' s face	A man ' s face is being painted by a woman	4.9	ENTAILMENT
+5018	A woman is painting a man ' s face	A woman is cleaning a man ' s face	3.9	NEUTRAL
+5022	A woman is painting a man ' s face	Makeup is being put on the man by the woman	4.1	ENTAILMENT
+5023	The woman is not putting makeup on the man	A woman is painting a man ' s face	3.2	NEUTRAL
+5024	The woman is putting makeup on the man	A man ' s face is being painted by a woman	4.5	ENTAILMENT
+5025	A woman is cleaning a man ' s face	The woman is putting makeup on the man	2.7	NEUTRAL
+5026	A man is painting a woman ' s face	The woman is putting makeup on the man	2.5	NEUTRAL
+5027	The woman is putting makeup on the man	A woman is painting a man ' s face	4.4	ENTAILMENT
+5031	The man is talking on the telephone	The man isn ' t talking on the telephone	3.3	CONTRADICTION
 5032	The man is talking about the telephone	The man is talking on the telephone	3.6	NEUTRAL
 5033	The man is talking on the phone	The man is speaking on the telephone	4.8	ENTAILMENT
 5037	The man is not talking on the phone	The man is talking on the telephone	3.7	CONTRADICTION
@@ -2652,9 +2652,9 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 5864	Two women are dancing and singing in front of many people	The women are singing and dancing	4.5	ENTAILMENT
 5865	Two men are dancing and singing in front of a crowd	The women are singing and dancing	3.1	NEUTRAL
 5867	The women are not singing and dancing	Two women are dancing and singing in front of a crowd	3.6	NEUTRAL
-5874	A lemur is biting a person 's finger	An animal is biting someone 's finger	4.4	ENTAILMENT
-5875	An animal is biting a person 's finger	An animal is biting someone 's finger	5	ENTAILMENT
-5876	A lemur is licking a person 's finger	An animal is biting someone 's finger	3.3	NEUTRAL
+5874	A lemur is biting a person ' s finger	An animal is biting someone ' s finger	4.4	ENTAILMENT
+5875	An animal is biting a person ' s finger	An animal is biting someone ' s finger	5	ENTAILMENT
+5876	A lemur is licking a person ' s finger	An animal is biting someone ' s finger	3.3	NEUTRAL
 5879	A man is skateboarding on a half pipe	A girl is skateboarding on a half pipe	3.835	NEUTRAL
 5882	A skateboarder is doing acrobatics on a half pipe	A man is skateboarding on a half pipe	3.9	ENTAILMENT
 5883	A man is skateboarding on a half pipe	A skateboarder is falling off a half pipe	3.6	NEUTRAL
@@ -2868,7 +2868,7 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 6333	The little girl in a pink shirt is running under a tree in the desert	A girl is running with a pink shirt and is not wearing jeans	3.2	NEUTRAL
 6334	A girl is wearing jeans and a pink shirt and is running	The little girl in a pink shirt is running under a tree in the desert	3.8	NEUTRAL
 6335	The white dog wearing reindeer ears is close to a brown dog	The white dog wearing reindeer ears is near a brown dog	4.9	ENTAILMENT
-6336	The white dog wearing reindeer ears is near a brown dog	The white dog is not wearing reindeer ears and isn 't near a brown dog	3.6	CONTRADICTION
+6336	The white dog wearing reindeer ears is near a brown dog	The white dog is not wearing reindeer ears and isn ' t near a brown dog	3.6	CONTRADICTION
 6337	The white reindeer wearing dog ears is near a brown reindeer	The white dog wearing reindeer ears is near a brown dog	3.3	NEUTRAL
 6338	A white dog is wearing a Christmas reindeer headband and is playing with a brown dog in the grass	A white dog is wearing a Christmas reindeer headband and is playing with a dog with a brown coat in the grass	4.5	ENTAILMENT
 6342	The white dog wearing reindeer ears is close to a brown dog	A white dog is wearing a Christmas reindeer headband and is playing with a brown dog in the grass	4.2	NEUTRAL
@@ -3322,9 +3322,9 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 7383	A young child dressed for cold weather is standing outside	The smiling boy in winter clothes is waving his mittened hands outside the building in the snow	3.2	NEUTRAL
 7386	A kid is smiling at the camera and swimming underwater	A child is smiling at the camera and swimming underwater	4.7	ENTAILMENT
 7388	A child is playfully swimming underwater in a pool	A child is swimming underwater in a pool	4.5	ENTAILMENT
-7389	A child is swimming underwater in a pool	A child is swimming on the water 's surface in a pool	3.2	NEUTRAL
+7389	A child is swimming underwater in a pool	A child is swimming on the water ' s surface in a pool	3.2	NEUTRAL
 7390	A child is playfully swimming underwater in a pool	A child is smiling at the camera and swimming underwater	4.1	NEUTRAL
-7391	A child is smiling at the camera and swimming underwater	A child is swimming on the water 's surface in a pool	3.1	NEUTRAL
+7391	A child is smiling at the camera and swimming underwater	A child is swimming on the water ' s surface in a pool	3.1	NEUTRAL
 7392	A child is swimming underwater in a pool	A kid is smiling at the camera and swimming underwater	4	NEUTRAL
 7397	A yellow kayak is being ridden by a man and a young boy	A man and a young boy are riding in a yellow kayak	4.9	ENTAILMENT
 7398	A man and a young boy are riding in a yellow kayak	A man and a young boy are jumping off of a yellow kayak	3.6	NEUTRAL
@@ -3678,9 +3678,9 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 8152	The girl in blue is chasing the base runner with a number on the jersey	A man in blue has a yellow ball in the mitt	2.7	NEUTRAL
 8155	The young man is not rock climbing	The young man is rock climbing	4.2	CONTRADICTION
 8156	A man in a purple hat is climbing a rocky wall with bare hands	A rocky wall is climbed by a man in a purple hat with bare hands	4.9	ENTAILMENT
-8157	A man in a purple hat isn 't climbing a rocky wall with bare hands	A man in a purple hat is climbing a rocky wall with bare hands	3.6	CONTRADICTION
+8157	A man in a purple hat isn ' t climbing a rocky wall with bare hands	A man in a purple hat is climbing a rocky wall with bare hands	3.6	CONTRADICTION
 8158	A rocky wall is climbed by a man in a purple hat with bare hands	The young man is rock climbing	4.2	ENTAILMENT
-8159	A man in a purple hat isn 't climbing a rocky wall with bare hands	The young man is rock climbing	2.8	NEUTRAL
+8159	A man in a purple hat isn ' t climbing a rocky wall with bare hands	The young man is rock climbing	2.8	NEUTRAL
 8161	A man in a purple hat is climbing a rocky wall with bare hands	The young man is not rock climbing	3.3	NEUTRAL
 8162	A man in a purple hat is climbing a rocky wall with bare hands	The young man is rock climbing	3.7	NEUTRAL
 8165	A blond woman is sitting on the roof of a yellow vehicle and two people are inside	A woman with blond hair is sitting on the roof of a yellow vehicle and two people are inside	4.5	ENTAILMENT
@@ -3871,7 +3871,7 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 8588	A man with a white hat and brown shirt is behind a woman in red and is looking to the left	A man with a white hat and brown shirt is behind a woman in red and is looking to the side	4.5	ENTAILMENT
 8589	A man with a white hat and brown shirt is behind a woman in red and is looking to the right	A man with a white hat and brown shirt is behind a woman in red and is looking to the left	4.3	NEUTRAL
 8590	An Arabic man is wearing a white hat	A man with a white hat and brown shirt is behind a woman in red and is looking to the side	2.6	NEUTRAL
-8593	An Arabic man isn 't wearing a white hat	A man with a white hat and brown shirt is behind a woman in red and is looking to the left	2.3	NEUTRAL
+8593	An Arabic man isn ' t wearing a white hat	A man with a white hat and brown shirt is behind a woman in red and is looking to the left	2.3	NEUTRAL
 8594	A man with a white hat and brown shirt is behind a woman in red and is looking to the left	An Arabic man is wearing a white hat	2.4	NEUTRAL
 8596	Little kids are playing in a water fountain in front of lots of people	Little kids are playing in a water fountain in front of few people	4.1	NEUTRAL
 8597	Children are playing in a fountain that is spraying water from the ground	Children are playing in ground fountains	4.3	ENTAILMENT
@@ -4313,10 +4313,10 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 9580	A dog is fetching a stick out of very clear water	A big black and white dog is carrying a stick and is swimming	3.4	NEUTRAL
 9581	A dog is fetching a piece of wood out of very clear water	A small black and white dog is carrying a stick and is swimming	3.9	NEUTRAL
 9583	A dog is fetching a stick out of very clear water	A small black and white dog is carrying a stick and is swimming	3.4	NEUTRAL
-9591	The girl is painting a coverall blue	The lady is holding the paintbrush next to the artist 's easel	2.4	NEUTRAL
-9592	The girl in the blue coverall is painting	The woman is holding the paintbrush next to the artist 's easel	3.5	NEUTRAL
-9593	The girl in the blue coverall is painting	There is no lady holding the paintbrush next to the artist 's easel	2.8	NEUTRAL
-9594	The lady is holding the paintbrush next to the artist 's easel	The girl in the blue coverall is painting	3.1	NEUTRAL
+9591	The girl is painting a coverall blue	The lady is holding the paintbrush next to the artist ' s easel	2.4	NEUTRAL
+9592	The girl in the blue coverall is painting	The woman is holding the paintbrush next to the artist ' s easel	3.5	NEUTRAL
+9593	The girl in the blue coverall is painting	There is no lady holding the paintbrush next to the artist ' s easel	2.8	NEUTRAL
+9594	The lady is holding the paintbrush next to the artist ' s easel	The girl in the blue coverall is painting	3.1	NEUTRAL
 9599	A yellow dog is running down a path covered by sand	A golden retriever is running	3.6	NEUTRAL
 9600	A yellow dog is running up a sandy path	A golden retriever is running	4	NEUTRAL
 9602	A yellow dog is running down a sandy path	A golden retriever is not running	3	NEUTRAL
@@ -4411,9 +4411,9 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 9795	A man is playing a violin	A woman is cutting a white onion	1	NEUTRAL
 9799	Pedestrians and cars are moving through a traffic jam in the big city	A man is breaking wooden boards with his hand	1	NEUTRAL
 9800	A boy is standing next to the opening of a fountain	The man is standing on a rocky mountain and gray clouds are in the background	1.4	NEUTRAL
-9803	A seated woman is singing a song and playing the guitar	The man isn 't lifting weights	1	NEUTRAL
+9803	A seated woman is singing a song and playing the guitar	The man isn ' t lifting weights	1	NEUTRAL
 9805	The girl , who is little , is swinging and the woman is standing behind	A red dog is jumping and catching a tennis ball in its mouth	1.2	NEUTRAL
-9806	The woman is frying a breaded pork chop	The lady isn 't breaking raw eggs into a bowl	2.4	NEUTRAL
+9806	The woman is frying a breaded pork chop	The lady isn ' t breaking raw eggs into a bowl	2.4	NEUTRAL
 9811	The man is playing the drums	The black bird is sitting in a leafless tree	1	NEUTRAL
 9814	A father is pushing his daughter on a go-kart and another girl is watching	A white dog is standing on fallen leaves	1	NEUTRAL
 9815	A man is mowing a lawn	A black and white dog is playing with a tattered volleyball in a brown field	1	NEUTRAL
@@ -4421,7 +4421,7 @@ pair_ID	sentence_A	sentence_B	relatedness_score	entailment_judgment
 9817	A woman is frying fish	Two women are wearing bikinis and are walking on the sand	1	NEUTRAL
 9820	A surfer is riding the wave	There is no man tying a shoe	1	NEUTRAL
 9821	A big dog and a small white dog are playing together	Two construction workers are sitting up on the top of a building	1	NEUTRAL
-9825	The girl is carrying a sign and a group of people is following her	A woman is cleaning a man 's face	1	NEUTRAL
+9825	The girl is carrying a sign and a group of people is following her	A woman is cleaning a man ' s face	1	NEUTRAL
 9827	A woman is breaking eggs	A shirtless man is posing with a girl who is hiking in a park	1	NEUTRAL
 9829	A man with tattoos is lounging on a couch and is looking for a pencil	A cow is eating hay	1	NEUTRAL
 9836	Three men are sitting on a hill and looking at the mountains and sky	Some meat is being stitched together by a woman	1	NEUTRAL

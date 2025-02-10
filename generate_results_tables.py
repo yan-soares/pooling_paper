@@ -36,6 +36,16 @@ def parse_dict_with_eval(value):
         return {}
     except Exception as e:
         return {}
+
+def parse_dict_with_eval_other(value):
+    try:
+        if isinstance(value, str):
+            value = value.replace('np.float64', 'float')
+            value = ','.join(value.split(',')[:3]) + '}'
+            return eval(value)
+        return {}
+    except Exception as e:
+        return {}
     
 def get_type_pooling(pooling_str):
 
@@ -139,9 +149,9 @@ def tables_similarity(si_paths, columns_tasks_si, ordem_colunas_si):
             if task in columns_tasks_si[:5]:
                 pearson_data[task] = data[task].apply(lambda x: (parse_dict_with_eval(x).get('pearson', None).get('mean', None)))
                 spearman_data[task] = data[task].apply(lambda x: (parse_dict_with_eval(x).get('spearman', None).get('mean', None)))
-            elif task in columns_tasks_si[5:]:
-                pearson_data[task] = data[task].apply(lambda x: (parse_dict_with_eval(x).get('pearson', None)))
-                spearman_data[task] = data[task].apply(lambda x: (parse_dict_with_eval(x).get('spearman', None)))
+            if task in columns_tasks_si[5:]:
+                pearson_data[task] = data[task].apply(lambda x: (parse_dict_with_eval_other(x).get('pearson', None)))
+                spearman_data[task] = data[task].apply(lambda x: (parse_dict_with_eval_other(x).get('spearman', None)))
 
         pearson_table = pd.DataFrame(pearson_data)
         spearman_table = pd.DataFrame(spearman_data)        
