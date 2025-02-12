@@ -1,6 +1,6 @@
 import torch
 
-def get_pooling_techniques(poolings_args, agg_layers_args):
+def get_pooling_techniques(poolings_args):
 
     simple_poolings = ['CLS', 'AVG', 'SUM', 'MAX']
     simple_ns_poolings = ['AVG-NS', 'SUM-NS', 'MAX-NS'] 
@@ -62,14 +62,13 @@ def get_pooling_techniques(poolings_args, agg_layers_args):
 
 def get_list_layers(final_layer, initial_layer, agg_layers_args):
 
-    list_lyrs_agg_sum = ["SUM-7-12", "SUM-7-10", "SUM-8-11", "SUM-9-12", "SUM-7-9", "SUM-8-10",  "SUM-9-11", "SUM-10-12", "SUM-7-8", "SUM-8-9",  "SUM-9-10", "SUM-10-11", "SUM-11-12", "SUM-1-12"] 
-    list_lyrs_agg_avg = ["AVG-7-12", "AVG-7-10", "AVG-8-11", "AVG-9-12", "AVG-7-9", "AVG-8-10",  "AVG-9-11", "AVG-10-12", "AVG-7-8", "AVG-8-9",  "AVG-9-10", "AVG-10-11", "AVG-11-12", "AVG-1-12"]
+    list_lyrs_agg_sum = ["SUM-7-11", "SUM-6-10", "SUM-5-9", "SUM-6-11", "SUM-5-10", "SUM-5-11", "SUM-4-10", "SUM-4-11"] + ["SUM-7-12", "SUM-7-10", "SUM-8-11", "SUM-9-12", "SUM-7-9", "SUM-8-10", "SUM-9-11", "SUM-10-12", "SUM-7-8", "SUM-8-9",  "SUM-9-10", "SUM-10-11", "SUM-11-12", "SUM-1-12"] 
+    list_lyrs_agg_avg = ["AVG-7-11", "AVG-6-10", "AVG-5-9", "AVG-6-11", "AVG-5-10", "AVG-5-11", "AVG-4-10", "AVG-4-11"] + ["AVG-7-12", "AVG-7-10", "AVG-8-11", "AVG-9-12", "AVG-7-9", "AVG-8-10", "AVG-9-11", "AVG-10-12", "AVG-7-8", "AVG-8-9",  "AVG-9-10", "AVG-10-11", "AVG-11-12", "AVG-1-12"]
     list_lyrs_agg = list_lyrs_agg_sum + list_lyrs_agg_avg
 
     list_lyrs_agg_sum_large = ["SUM-14-15", "SUM-15-16", "SUM-16-17", "SUM-17-18", "SUM-14-16", "SUM-15-17",  "SUM-16-18", "SUM-14-17", "SUM-15-18"] 
     list_lyrs_agg_avg_large = ["AVG-14-15", "AVG-15-16", "AVG-16-17", "AVG-17-18", "AVG-14-16", "AVG-15-17",  "AVG-16-18", "AVG-14-17", "AVG-15-18"] 
-
-
+    
     lyrs = []
         
     if agg_layers_args[0] == 'ALL':
