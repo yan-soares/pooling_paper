@@ -1,6 +1,6 @@
 import torch
 
-def get_pooling_techniques(poolings_args):
+def get_pooling_techniques(poolings_args, name_agg):
 
     simple_poolings = ['CLS', 'AVG', 'SUM', 'MAX']
     simple_ns_poolings = ['AVG-NS', 'SUM-NS', 'MAX-NS'] 
