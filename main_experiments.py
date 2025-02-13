@@ -213,26 +213,29 @@ class SentenceEncoder:
             match self.name_model:
                 case 'sentence-transformers/all-mpnet-base-v2':
                     SUM_7_12_hidden = torch.stack(hidden_state[7:13], dim=0).sum(dim=0) 
-                    AVG_1_12_hidden = torch.stack(hidden_state[1:13], dim=0).mean(dim=0)
-                    self.print_best_layers =  "cls_SUM-7-12_avg_SUM-7-12_sum_AVG-1-12_avgns_SUM-7-12_sumns_AVG-1-12"
+                    SUM_5_12_hidden = torch.stack(hidden_state[5:13], dim=0).sum(dim=0) 
+                    AVG_6_12_hidden = torch.stack(hidden_state[6:13], dim=0).mean(dim=0)
+                    AVG_5_12_hidden = torch.stack(hidden_state[5:13], dim=0).mean(dim=0)
+                    self.print_best_layers =  "cls_SUM-7-12_avg_SUM-5-12_sum_AVG-6-12_avgns_SUM-5-12_sumns_AVG-5-12"
 
                     cls_result = SUM_7_12_hidden[:, 0, :]
-                    avg_result = ((SUM_7_12_hidden * attention_mask.unsqueeze(-1)).sum(1) / attention_mask.sum(-1).unsqueeze(-1).clamp(min=1e-9))
-                    sum_result = (AVG_1_12_hidden * attention_mask.unsqueeze(-1)).sum(dim=1)
-                    avg_ns_result = self._mean_pooling_exclude_cls_sep(SUM_7_12_hidden, attention_mask)
-                    sum_ns_result = self._sum_pooling_exclude_cls_sep(AVG_1_12_hidden, attention_mask)
+                    avg_result = ((SUM_5_12_hidden * attention_mask.unsqueeze(-1)).sum(1) / attention_mask.sum(-1).unsqueeze(-1).clamp(min=1e-9))
+                    sum_result = (AVG_6_12_hidden * attention_mask.unsqueeze(-1)).sum(dim=1)
+                    avg_ns_result = self._mean_pooling_exclude_cls_sep(SUM_5_12_hidden, attention_mask)
+                    sum_ns_result = self._sum_pooling_exclude_cls_sep(AVG_5_12_hidden, attention_mask)
                 case 'microsoft/deberta-v3-base':
                     SUM_11_12_hidden = torch.stack(hidden_state[11:13], dim=0).sum(dim=0) 
                     SUM_7_10_hidden = torch.stack(hidden_state[7:11], dim=0).sum(dim=0) 
-                    SUM_8_11_hidden = torch.stack(hidden_state[8:12], dim=0).sum(dim=0)
+                    SUM_6_10_hidden = torch.stack(hidden_state[6:11], dim=0).sum(dim=0)
+                    AVG_7_11_hidden = torch.stack(hidden_state[7:12], dim=0).mean(dim=0)
                     LYR_9 = hidden_state[9]
-                    self.print_best_layers =  "cls_SUM-11-12_avg_SUM-7-10_sum_LYR-9_avgns_SUM-8-11_sumns_LYR-9"
+                    self.print_best_layers =  "cls_SUM-11-12_avg_SUM-7-10_sum_LYR-9_avgns_SUM-6-10_sumns_AVG-7-11"
 
                     cls_result = SUM_11_12_hidden[:, 0, :]
                     avg_result = ((SUM_7_10_hidden * attention_mask.unsqueeze(-1)).sum(1) / attention_mask.sum(-1).unsqueeze(-1).clamp(min=1e-9))
                     sum_result = (LYR_9 * attention_mask.unsqueeze(-1)).sum(dim=1)
-                    avg_ns_result = self._mean_pooling_exclude_cls_sep(SUM_8_11_hidden, attention_mask)
-                    sum_ns_result = self._sum_pooling_exclude_cls_sep(LYR_9, attention_mask)
+                    avg_ns_result = self._mean_pooling_exclude_cls_sep(SUM_6_10_hidden, attention_mask)
+                    sum_ns_result = self._sum_pooling_exclude_cls_sep(AVG_7_11_hidden, attention_mask)
 
         match name_pooling:
        

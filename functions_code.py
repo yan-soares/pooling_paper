@@ -39,6 +39,12 @@ def get_pooling_techniques(poolings_args, name_agg):
         pooling_prefixs = two_tokens_poolings + three_tokens_poolings + four_tokens_poolings
         return pooling_prefixs
     
+    if poolings_args[0] == 'best_new':
+        pooling_prefixs = ["CLS+AVG", "CLS+SUM", "CLS+AVG-NS", "CLS+SUM-NS", "AVG+SUM", "AVG+AVG-NS", "AVG+SUM-NS", "SUM+AVG-NS",
+                           "SUM+SUM-NS", "AVG-NS+SUM-NS", "CLS+AVG+SUM", "CLS+AVG+AVG-NS", "CLS+AVG+SUM-NS", "CLS+SUM+AVG-NS", "CLS+SUM+SUM-NS", 
+                           "CLS+AVG-NS+SUM-NS", "AVG+SUM+AVG-NS", "AVG+SUM+SUM-NS", "AVG+AVG-NS+SUM-NS", "SUM+AVG-NS+SUM-NS"]
+        return pooling_prefixs
+    
     if poolings_args[0] == 'large':
         return poolings_large
 
