@@ -1,5 +1,27 @@
 import torch
 
+def get_agg_base():
+    list_sum_agg = []
+    list_avg_agg = []
+
+    ranges = list(range(1, 13))
+
+    slices = {}
+    for size in range(2, 13):  # De 2 até 12
+        slices[size] = [f"SUM-{group[0]}-{group[-1]}" for group in (ranges[i:i+size] for i in range(len(ranges) - size + 1))]
+
+    for size, groups in slices.items():
+        list_sum_agg+=groups
+
+    slices = {}
+    for size in range(2, 13):  # De 2 até 12
+        slices[size] = [f"AVG-{group[0]}-{group[-1]}" for group in (ranges[i:i+size] for i in range(len(ranges) - size + 1))]
+
+    for size, groups in slices.items():
+        list_avg_agg+=groups
+    
+    return list_sum_agg, list_avg_agg
+
 def get_pooling_techniques(poolings_args, name_agg):
 
     simple_poolings = ['CLS', 'AVG', 'SUM', 'MAX']
@@ -68,9 +90,9 @@ def get_pooling_techniques(poolings_args, name_agg):
 
 def get_list_layers(final_layer, initial_layer, agg_layers_args):
 
-    list_lyrs_agg_sum = ["SUM-5-6", "SUM-6-7", "SUM-7-8", "SUM-8-9", "SUM-9-10", "SUM-10-11", "SUM-11-12"] + ["SUM-5-7", "SUM-6-8", "SUM-7-9", "SUM-8-10", "SUM-9-11", "SUM-10-12"] + ["SUM-5-8", "SUM-6-9", "SUM-7-10", "SUM-8-11", "SUM-9-12"] + ["SUM-5-9", "SUM-6-10", "SUM-7-11", "SUM-8-12"] + ["SUM-5-10", "SUM-6-11", "SUM-7-12"] + ["SUM-5-11", "SUM-6-12"] + ["SUM-5-12"]
-    list_lyrs_agg_avg= ["AVG-5-6", "AVG-6-7", "AVG-7-8", "AVG-8-9", "AVG-9-10", "AVG-10-11", "AVG-11-12"] + ["AVG-5-7", "AVG-6-8", "AVG-7-9", "AVG-8-10", "AVG-9-11", "AVG-10-12"] + ["AVG-5-8", "AVG-6-9", "AVG-7-10", "AVG-8-11", "AVG-9-12"] + ["AVG-5-9", "AVG-6-10", "AVG-7-11", "AVG-8-12"] + ["AVG-5-10", "AVG-6-11", "AVG-7-12"] + ["AVG-5-11", "AVG-6-12"] + ["AVG-5-12"]
-
+    #list_lyrs_agg_sum = ["SUM-5-6", "SUM-6-7", "SUM-7-8", "SUM-8-9", "SUM-9-10", "SUM-10-11", "SUM-11-12"] + ["SUM-5-7", "SUM-6-8", "SUM-7-9", "SUM-8-10", "SUM-9-11", "SUM-10-12"] + ["SUM-5-8", "SUM-6-9", "SUM-7-10", "SUM-8-11", "SUM-9-12"] + ["SUM-5-9", "SUM-6-10", "SUM-7-11", "SUM-8-12"] + ["SUM-5-10", "SUM-6-11", "SUM-7-12"] + ["SUM-5-11", "SUM-6-12"] + ["SUM-5-12"]
+    #list_lyrs_agg_avg= ["AVG-5-6", "AVG-6-7", "AVG-7-8", "AVG-8-9", "AVG-9-10", "AVG-10-11", "AVG-11-12"] + ["AVG-5-7", "AVG-6-8", "AVG-7-9", "AVG-8-10", "AVG-9-11", "AVG-10-12"] + ["AVG-5-8", "AVG-6-9", "AVG-7-10", "AVG-8-11", "AVG-9-12"] + ["AVG-5-9", "AVG-6-10", "AVG-7-11", "AVG-8-12"] + ["AVG-5-10", "AVG-6-11", "AVG-7-12"] + ["AVG-5-11", "AVG-6-12"] + ["AVG-5-12"]
+    list_lyrs_agg_sum, list_lyrs_agg_avg = get_agg_base()
     list_lyrs_agg = list_lyrs_agg_sum + list_lyrs_agg_avg
 
     #list_lyrs_agg_sum_large = ["SUM-14-15", "SUM-15-16", "SUM-16-17", "SUM-17-18", "SUM-14-16", "SUM-15-17",  "SUM-16-18", "SUM-14-17", "SUM-15-18"] 
