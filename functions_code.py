@@ -73,28 +73,28 @@ def get_pooling_techniques(poolings_args, name_agg):
         return poolings_large
 
     if 'simple' in poolings_args:
-        pooling_prefixs = simple_poolings
-        return pooling_prefixs
+        pooling_prefixs += simple_poolings
+        #return pooling_prefixs
     if 'simple-ns' in poolings_args:
-        pooling_prefixs = simple_ns_poolings
-        return pooling_prefixs
+        pooling_prefixs += simple_ns_poolings
+        #return pooling_prefixs
     if 'simple-nostop' in poolings_args:
-        pooling_prefixs = simple_nostop_poolings
-        return pooling_prefixs
+        pooling_prefixs += simple_nostop_poolings
+        #return pooling_prefixs
     if 'simple-ns-nostop' in poolings_args:
-        pooling_prefixs = simple_ns_nostop_poolings
-        return pooling_prefixs
+        pooling_prefixs += simple_ns_nostop_poolings
+        #return pooling_prefixs
     if 'two' in poolings_args:
-        pooling_prefixs = two_tokens_poolings
-        return pooling_prefixs
+        pooling_prefixs += two_tokens_poolings
+        #return pooling_prefixs
     if 'three' in poolings_args:
-        pooling_prefixs = three_tokens_poolings
-        return pooling_prefixs  
+        pooling_prefixs += three_tokens_poolings
+        #return pooling_prefixs  
     if 'four' in poolings_args:
-        pooling_prefixs = four_tokens_poolings
-        return pooling_prefixs     
-    else:
-        return poolings_args
+        pooling_prefixs += four_tokens_poolings
+        #return pooling_prefixs     
+    
+    return poolings_args
 
 def get_list_layers(final_layer, initial_layer, agg_layers_args):
 

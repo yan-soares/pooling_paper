@@ -531,12 +531,12 @@ class SentenceEncoder:
         name_agg = self.pooling_strategy.split("_")[-1]
 
         if name_agg == 'BEST':
-             return self.get_best_pooling(hidden_states, attention_mask, name_pooling, name_agg)
+             return self.get_best_pooling(hidden_states, attention_mask, name_pooling, name_agg, input_ids)
 
         if name_agg.startswith("LYR"):
             layer_idx = int(name_agg.split('-')[-1])   
             LYR_hidden =  hidden_states[layer_idx]            
-            return self._get_pooling_result(LYR_hidden, attention_mask, name_pooling, "LYR")        
+            return self._get_pooling_result(LYR_hidden, attention_mask, name_pooling, "LYR", input_ids)        
         else:        
             name_agg_type = name_agg.split("-")[0]
             agg_initial_layer = int(name_agg.split("-")[1])
