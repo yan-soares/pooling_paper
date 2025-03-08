@@ -94,7 +94,11 @@ def get_pooling_techniques(poolings_args, name_agg):
         pooling_prefixs += four_tokens_poolings
         #return pooling_prefixs     
     
-    return poolings_args
+    
+    if len(pooling_prefixs) > 0:
+        return pooling_prefixs
+    else:
+        return poolings_args
 
 def get_list_layers(final_layer, initial_layer, agg_layers_args):
 
