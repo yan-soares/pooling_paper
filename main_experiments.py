@@ -1,11 +1,12 @@
 import senteval
-from transformers import AutoTokenizer, AutoModelForMaskedLM, DebertaV2Model, DebertaV2Tokenizer, BertTokenizer, BertModel, RobertaTokenizer, RobertaModel, AutoModel
+from transformers import AutoTokenizer, DebertaV2Model, DebertaV2Tokenizer, BertTokenizer, BertModel, RobertaTokenizer, RobertaModel, AutoModel
 import torch
 import argparse
 import pandas as pd
 import logging
 import os
 import functions_code
+from nltk.corpus import stopwords
 
 torch.backends.cudnn.benchmark = True
 torch.backends.cudnn.deterministic = False
@@ -16,6 +17,7 @@ class SentenceEncoder:
         self.size_embedding = None
         self.pooling_strategy = None
         self.print_best_layers = None
+        self.stopwords_set = None
 
         self.general_embeddings = {}
         self.list_poolings = None
@@ -67,6 +69,10 @@ class SentenceEncoder:
             self.qtd_layers = 12
             self.tokenizer = AutoTokenizer.from_pretrained(self.name_model)
             self.model = AutoModel.from_pretrained(self.name_model, output_hidden_states=True).to(self.device)
+
+    def _get_list_stopwords(self):
+        tokenized_stopwords = self.tokenizer.tokenize(' '.join(stopwords.words('english')))
+        self.stopwords_set = tokenized_stopwords
     
     def _encode(self, sentences, current_task, batch_size=2048): 
         tokens = self.tokenizer(
@@ -80,7 +86,7 @@ class SentenceEncoder:
             batch_tokens = {key: val[i:i+batch_size] for key, val in tokens.items()}
             with torch.no_grad(), torch.amp.autocast('cuda'):
                 output = self.model(**batch_tokens)
-                embeddings = self._apply_pooling(output, batch_tokens['attention_mask'])
+                embeddings = self._apply_pooling(output, batch_tokens['attention_mask'], batch_tokens['input_ids'])
 
                 del batch_tokens, output
                 torch.cuda.empty_cache()
@@ -91,6 +97,33 @@ class SentenceEncoder:
 
         final_embeddings = torch.cat(all_embeddings, dim=0).to('cpu').numpy()
         return final_embeddings
+    
+    def _mean_pooling_exclude_stopwords(self, output, attention_mask, input_ids):
+ 
+        batch_size, seq_len, hidden_size = output.shape
+
+        # Converte input_ids para tokens (lista de listas)
+        token_texts = [self.tokenizer.convert_ids_to_tokens(ids) for ids in input_ids]
+
+        # Criar máscara para remover apenas as stopwords
+        stopword_mask = torch.ones_like(attention_mask)  # Inicialmente, todos tokens são válidos
+        for i in range(batch_size):
+            for j in range(seq_len):  # Percorre todos os tokens (incluindo CLS e SEP)
+                
+                if token_texts[i][j] in self.stopwords_set:
+                    
+                    stopword_mask[i, j] = 0  # Define stopword como inválida
+
+        # Aplica a nova máscara
+        expanded_mask = (attention_mask * stopword_mask).unsqueeze(-1)  # Expande para multiplicar com embeddings
+        masked_embeddings = output * expanded_mask  # Aplica a máscara aos embeddings
+
+        # Soma os embeddings válidos e calcula a média
+        sum_embeddings = masked_embeddings.sum(dim=1)
+        valid_token_counts = expanded_mask.sum(dim=1)
+        mean_pooled_embeddings = sum_embeddings / valid_token_counts.clamp(min=1e-9)  # Evita divisão por zero
+
+        return mean_pooled_embeddings
    
     def _mean_pooling_exclude_cls_sep(self, output, attention_mask):
  
@@ -111,41 +144,232 @@ class SentenceEncoder:
 
         return mean_pooled_embeddings
     
-    def _sum_pooling_exclude_cls_sep(self, output, attention_mask):
+    def _mean_pooling_exclude_cls_sep_and_stopwords(self, output, attention_mask, input_ids):
+        """
+        Aplica mean pooling excluindo tokens CLS, SEP e stopwords.
+        
+        Parâmetros:
+            output: Tensor (batch_size, seq_len, hidden_size) - Embeddings do modelo
+            attention_mask: Tensor (batch_size, seq_len) - Máscara indicando tokens válidos
+            input_ids: Tensor (batch_size, seq_len) - IDs dos tokens
+        
+        Retorna:
+            mean_pooled_embeddings: Tensor (batch_size, hidden_size) - Embeddings médios
+        """
+        # Remove CLS e SEP (primeiro e último token)
+        embeddings = output[:, 1:-1, :]
+        attention_mask = attention_mask[:, 1:-1]
+        input_ids = input_ids[:, 1:-1]  # Remove CLS e SEP dos tokens também
 
-        # Exclui o CLS removendo o primeiro token e exclui o SEP removendo o último token
-        embeddings = output[:, 1:-1, :]  # Remove CLS (primeiro) e SEP (último)
-        attention_mask = attention_mask[:, 1:-1]  # Remove CLS e SEP na máscara também
+        # Converte input_ids de volta para tokens
+        token_texts = [self.tokenizer.convert_ids_to_tokens(ids) for ids in input_ids]
 
-        # Expande a máscara para corresponder ao tamanho dos embeddings
-        expanded_mask = attention_mask.unsqueeze(-1)  # (batch_size x seq_len-2 x 1)
+        # Cria máscara para stopwords (1 para tokens válidos, 0 para stopwords)
+        stopword_mask = torch.tensor([
+            [0 if token in self.stopwords_set else 1 for token in tokens]
+            for tokens in token_texts
+        ], dtype=torch.float32, device=output.device)
 
-        # Aplica a máscara para excluir padding
-        masked_embeddings = embeddings * expanded_mask
+        # Aplica máscara combinada (stopwords + padding)
+        expanded_mask = (attention_mask * stopword_mask).unsqueeze(-1)  # (batch_size, seq_len-2, 1)
+        masked_embeddings = embeddings * expanded_mask  # Remove stopwords e padding
 
-        # Soma os embeddings válidos ao longo da sequência
+        # Soma embeddings válidos e calcula média
+        sum_embeddings = masked_embeddings.sum(dim=1)
+        valid_token_counts = expanded_mask.sum(dim=1)
+        mean_pooled_embeddings = sum_embeddings / valid_token_counts.clamp(min=1e-9)  # Evita divisão por zero
+
+        return mean_pooled_embeddings
+    
+    def _sum_pooling_exclude_stopwords(self, output, attention_mask, input_ids):
+        """
+        Aplica sum pooling excluindo stopwords.
+
+        Parâmetros:
+            output: Tensor (batch_size, seq_len, hidden_size) - Embeddings do modelo
+            attention_mask: Tensor (batch_size, seq_len) - Máscara indicando tokens válidos
+            input_ids: Tensor (batch_size, seq_len) - IDs dos tokens
+
+        Retorna:
+            sum_pooled_embeddings: Tensor (batch_size, hidden_size) - Soma dos embeddings válidos
+        """
+        batch_size, seq_len, hidden_size = output.shape
+
+        # Converte input_ids para tokens
+        token_texts = [self.tokenizer.convert_ids_to_tokens(ids) for ids in input_ids]
+
+        # Criar máscara para remover stopwords
+        stopword_mask = torch.ones_like(attention_mask)
+        for i in range(batch_size):
+            for j in range(seq_len):
+                if token_texts[i][j] in self.stopwords_set:
+                    stopword_mask[i, j] = 0  # Exclui stopword
+
+        # Aplica máscara de stopwords
+        expanded_mask = (attention_mask * stopword_mask).unsqueeze(-1)
+        masked_embeddings = output * expanded_mask
+
+        # Soma os embeddings válidos (sem divisão)
         sum_pooled_embeddings = masked_embeddings.sum(dim=1)
 
         return sum_pooled_embeddings
 
-    def _max_pooling_exclude_cls_sep(self, output, attention_mask):
+    def _sum_pooling_exclude_cls_sep(self, output, attention_mask):
+        """
+        Aplica sum pooling excluindo CLS e SEP.
 
-        # Exclui o CLS removendo o primeiro token e exclui o SEP removendo o último token
-        embeddings = output[:, 1:-1, :]  # Remove CLS (primeiro) e SEP (último)
-        attention_mask = attention_mask[:, 1:-1]  # Remove CLS e SEP na máscara também
+        Parâmetros:
+            output: Tensor (batch_size, seq_len, hidden_size) - Embeddings do modelo
+            attention_mask: Tensor (batch_size, seq_len) - Máscara indicando tokens válidos
+
+        Retorna:
+            sum_pooled_embeddings: Tensor (batch_size, hidden_size) - Soma dos embeddings válidos
+        """
+        # Remove CLS e SEP (primeiro e último token)
+        embeddings = output[:, 1:-1, :]
+        attention_mask = attention_mask[:, 1:-1]
 
         # Expande a máscara para corresponder ao tamanho dos embeddings
-        expanded_mask = attention_mask.unsqueeze(-1)  # (batch_size x seq_len-2 x 1)
+        expanded_mask = attention_mask.unsqueeze(-1)
 
-        # Substitui tokens de padding por um valor muito pequeno (-inf) para ignorá-los
-        masked_embeddings = embeddings.masked_fill(expanded_mask == 0, float('-inf'))
+        # Aplica a máscara para excluir padding
+        masked_embeddings = embeddings * expanded_mask
 
-        # Seleciona o valor máximo ao longo da sequência
-        max_pooled_embeddings = masked_embeddings.max(dim=1).values
+        # Soma os embeddings válidos
+        sum_pooled_embeddings = masked_embeddings.sum(dim=1)
+
+        return sum_pooled_embeddings
+
+    def _sum_pooling_exclude_cls_sep_and_stopwords(self, output, attention_mask, input_ids):
+        """
+        Aplica sum pooling excluindo CLS, SEP e stopwords.
+
+        Parâmetros:
+            output: Tensor (batch_size, seq_len, hidden_size) - Embeddings do modelo
+            attention_mask: Tensor (batch_size, seq_len) - Máscara indicando tokens válidos
+            input_ids: Tensor (batch_size, seq_len) - IDs dos tokens
+
+        Retorna:
+            sum_pooled_embeddings: Tensor (batch_size, hidden_size) - Soma dos embeddings válidos
+        """
+        # Remove CLS e SEP (primeiro e último token)
+        embeddings = output[:, 1:-1, :]
+        attention_mask = attention_mask[:, 1:-1]
+        input_ids = input_ids[:, 1:-1]  # Remove CLS e SEP dos tokens também
+
+        # Converte input_ids de volta para tokens
+        token_texts = [self.tokenizer.convert_ids_to_tokens(ids) for ids in input_ids]
+
+        # Cria máscara para stopwords (1 para tokens válidos, 0 para stopwords)
+        stopword_mask = torch.tensor([
+            [0 if token in self.stopwords_set else 1 for token in tokens]
+            for tokens in token_texts
+        ], dtype=torch.float32, device=output.device)
+
+        # Aplica máscara combinada (stopwords + padding)
+        expanded_mask = (attention_mask * stopword_mask).unsqueeze(-1)
+        masked_embeddings = embeddings * expanded_mask
+
+        # Soma embeddings válidos (sem divisão)
+        sum_pooled_embeddings = masked_embeddings.sum(dim=1)
+
+        return sum_pooled_embeddings
+
+    def _max_pooling_exclude_stopwords(self, output, attention_mask, input_ids):
+        """
+        Aplica max pooling excluindo stopwords.
+
+        Parâmetros:
+            output: Tensor (batch_size, seq_len, hidden_size) - Embeddings do modelo
+            attention_mask: Tensor (batch_size, seq_len) - Máscara indicando tokens válidos
+            input_ids: Tensor (batch_size, seq_len) - IDs dos tokens
+
+        Retorna:
+            max_pooled_embeddings: Tensor (batch_size, hidden_size) - Máximo dos embeddings válidos
+        """
+        batch_size, seq_len, hidden_size = output.shape
+
+        # Converte input_ids para tokens
+        token_texts = [self.tokenizer.convert_ids_to_tokens(ids) for ids in input_ids]
+
+        # Criar máscara para remover stopwords
+        stopword_mask = torch.ones_like(attention_mask)
+        for i in range(batch_size):
+            for j in range(seq_len):
+                if token_texts[i][j] in self.stopwords_set:
+                    stopword_mask[i, j] = 0  # Exclui stopword
+
+        # Aplica máscara de stopwords
+        expanded_mask = (attention_mask * stopword_mask).unsqueeze(-1)
+        masked_embeddings = output * expanded_mask + (1 - expanded_mask) * (-1e9)  # Define valores inválidos como -inf
+
+        # Aplica max pooling ao longo da sequência (dim=1)
+        max_pooled_embeddings, _ = masked_embeddings.max(dim=1)
 
         return max_pooled_embeddings
     
-    def _simple_pooling(self, hidden_state, attention_mask, name_pooling):
+    def _max_pooling_exclude_cls_sep(self, output, attention_mask):
+        """
+        Aplica max pooling excluindo CLS e SEP.
+
+        Parâmetros:
+            output: Tensor (batch_size, seq_len, hidden_size) - Embeddings do modelo
+            attention_mask: Tensor (batch_size, seq_len) - Máscara indicando tokens válidos
+
+        Retorna:
+            max_pooled_embeddings: Tensor (batch_size, hidden_size) - Máximo dos embeddings válidos
+        """
+        # Remove CLS e SEP (primeiro e último token)
+        embeddings = output[:, 1:-1, :]
+        attention_mask = attention_mask[:, 1:-1]
+
+        # Expande a máscara para corresponder ao tamanho dos embeddings
+        expanded_mask = attention_mask.unsqueeze(-1)
+
+        # Aplica a máscara para excluir padding
+        masked_embeddings = embeddings * expanded_mask + (1 - expanded_mask) * (-1e9)
+
+        # Aplica max pooling ao longo da sequência (dim=1)
+        max_pooled_embeddings, _ = masked_embeddings.max(dim=1)
+
+        return max_pooled_embeddings
+    
+    def _max_pooling_exclude_cls_sep_and_stopwords(self, output, attention_mask, input_ids):
+        """
+        Aplica max pooling excluindo CLS, SEP e stopwords.
+
+        Parâmetros:
+            output: Tensor (batch_size, seq_len, hidden_size) - Embeddings do modelo
+            attention_mask: Tensor (batch_size, seq_len) - Máscara indicando tokens válidos
+            input_ids: Tensor (batch_size, seq_len) - IDs dos tokens
+
+        Retorna:
+            max_pooled_embeddings: Tensor (batch_size, hidden_size) - Máximo dos embeddings válidos
+        """
+        # Remove CLS e SEP (primeiro e último token)
+        embeddings = output[:, 1:-1, :]
+        attention_mask = attention_mask[:, 1:-1]
+        input_ids = input_ids[:, 1:-1]  # Remove CLS e SEP dos tokens também
+
+        # Converte input_ids de volta para tokens
+        token_texts = [self.tokenizer.convert_ids_to_tokens(ids) for ids in input_ids]
+
+        # Cria máscara para stopwords (1 para tokens válidos, 0 para stopwords)
+        stopword_mask = torch.tensor([
+            [0 if token in self.stopwords_set else 1 for token in tokens]
+            for tokens in token_texts
+        ], dtype=torch.float32, device=output.device)
+
+        # Aplica máscara combinada (stopwords + padding)
+        expanded_mask = (attention_mask * stopword_mask).unsqueeze(-1)
+        masked_embeddings = embeddings * expanded_mask + (1 - expanded_mask) * (-1e9)
+
+        # Aplica max pooling ao longo da sequência (dim=1)
+        max_pooled_embeddings, _ = masked_embeddings.max(dim=1)
+
+        return max_pooled_embeddings
+    
+    def _simple_pooling(self, hidden_state, attention_mask, name_pooling, input_ids):
 
          match name_pooling:
              
@@ -169,8 +393,27 @@ class SentenceEncoder:
             
             case "MAX-NS":
                 return self._max_pooling_exclude_cls_sep(hidden_state, attention_mask)  
+             
+            case "AVG-NOSTOP":
+                return self._mean_pooling_exclude_stopwords(hidden_state, attention_mask, input_ids)
+             
+            case "SUM-NOSTOP":
+                return self._sum_pooling_exclude_stopwords(hidden_state, attention_mask, input_ids)
+             
+            case "MAX-NOSTOP":
+                return self._max_pooling_exclude_stopwords(hidden_state, attention_mask, input_ids)
+             
+            case "AVG-NS-NOSTOP":
+                return self._mean_pooling_exclude_cls_sep_and_stopwords(hidden_state, attention_mask, input_ids)
+             
+            case "SUM-NS-NOSTOP":
+                return self._sum_pooling_exclude_cls_sep_and_stopwords(hidden_state, attention_mask, input_ids)
+             
+            case "MAX-NS-NOSTOP":
+                return self._max_pooling_exclude_cls_sep_and_stopwords(hidden_state, attention_mask, input_ids)
+        
 
-    def _get_pooling_result(self, hidden_state, attention_mask, name_pooling, name_agg):
+    def _get_pooling_result(self, hidden_state, attention_mask, name_pooling, name_agg, input_ids):
 
         name_pooling_split = name_pooling.split('+')
         self.print_best_layers =  "NORMAL"
@@ -178,32 +421,32 @@ class SentenceEncoder:
         match len(name_pooling_split):
 
             case 1:
-                return self._simple_pooling(hidden_state, attention_mask, name_pooling_split[0])
+                return self._simple_pooling(hidden_state, attention_mask, name_pooling_split[0], input_ids)
             
             case 2:
                 return torch.cat(
                 (
-                    self._simple_pooling(hidden_state, attention_mask, name_pooling_split[0]),
-                    self._simple_pooling(hidden_state, attention_mask, name_pooling_split[1])
+                    self._simple_pooling(hidden_state, attention_mask, name_pooling_split[0], input_ids),
+                    self._simple_pooling(hidden_state, attention_mask, name_pooling_split[1], input_ids)
                 ), 
                 dim=1)
             
             case 3:
                 return torch.cat(
                 (
-                    self._simple_pooling(hidden_state, attention_mask, name_pooling_split[0]),
-                    self._simple_pooling(hidden_state, attention_mask, name_pooling_split[1]),
-                    self._simple_pooling(hidden_state, attention_mask, name_pooling_split[2])
+                    self._simple_pooling(hidden_state, attention_mask, name_pooling_split[0], input_ids),
+                    self._simple_pooling(hidden_state, attention_mask, name_pooling_split[1], input_ids),
+                    self._simple_pooling(hidden_state, attention_mask, name_pooling_split[2], input_ids)
                 ), 
                 dim=1)
             
             case 4:
                 return torch.cat(
                 (
-                    self._simple_pooling(hidden_state, attention_mask, name_pooling_split[0]),
-                    self._simple_pooling(hidden_state, attention_mask, name_pooling_split[1]),
-                    self._simple_pooling(hidden_state, attention_mask, name_pooling_split[2]),
-                    self._simple_pooling(hidden_state, attention_mask, name_pooling_split[3])
+                    self._simple_pooling(hidden_state, attention_mask, name_pooling_split[0], input_ids),
+                    self._simple_pooling(hidden_state, attention_mask, name_pooling_split[1], input_ids),
+                    self._simple_pooling(hidden_state, attention_mask, name_pooling_split[2], input_ids),
+                    self._simple_pooling(hidden_state, attention_mask, name_pooling_split[3], input_ids)
                 ), 
                 dim=1)
 
@@ -281,7 +524,7 @@ class SentenceEncoder:
             case "SUM+AVG-NS+SUM-NS":
                 return torch.cat((sum_result, avg_ns_result, sum_ns_result), dim=1)
             
-    def _apply_pooling(self, output, attention_mask):  
+    def _apply_pooling(self, output, attention_mask, input_ids):  
 
         hidden_states = output.hidden_states
         name_pooling = self.pooling_strategy.split("_")[0]
@@ -302,10 +545,10 @@ class SentenceEncoder:
             match name_agg_type:  
 
                 case "SUM":
-                    return self._get_pooling_result(torch.stack(hidden_states[agg_initial_layer:agg_final_layer+1], dim=0).sum(dim=0), attention_mask, name_pooling, name_agg)
+                    return self._get_pooling_result(torch.stack(hidden_states[agg_initial_layer:agg_final_layer+1], dim=0).sum(dim=0), attention_mask, name_pooling, name_agg, input_ids)
                     
                 case "AVG":
-                    return self._get_pooling_result(torch.stack(hidden_states[agg_initial_layer:agg_final_layer+1], dim=0).mean(dim=0), attention_mask, name_pooling, name_agg)                  
+                    return self._get_pooling_result(torch.stack(hidden_states[agg_initial_layer:agg_final_layer+1], dim=0).mean(dim=0), attention_mask, name_pooling, name_agg, input_ids)                  
         
     def _strategies_pooling_list (self, initial_layer_args, final_layer_args, poolings_args, agg_layers_args):
         
@@ -347,6 +590,8 @@ def run_senteval(model_name, tasks, epochs, nhid_number, initial_layer_args, fin
     #GET ALL EMBEDDINGS
     print("LISTA DE POOLINGS: ", list_poolings)
     print("LISTA DE LAYERS: ", list_layers)
+
+    encoder._get_list_stopwords()
     
     for pooling in pooling_strategies:
         encoder.pooling_strategy = pooling
@@ -448,7 +693,7 @@ def main():
     poolings_args = args.poolings.split(",")
     agg_layers_args = args.agg_layers.split(",")  
 
-    main_path = '../pooling_paper_results/main_experiments_tables_final_paper'   
+    main_path = '../pooling_paper_results/main_experiments_tables_new_paper'   
 
     initial_layer_args_print = args.initial_layer if args.initial_layer is not None else "default"
     final_layer_args_print = args.final_layer if args.final_layer is not None else "default"
