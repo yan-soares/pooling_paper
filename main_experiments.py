@@ -403,13 +403,13 @@ class SentenceEncoder:
             case "MAX-NOSTOP":
                 return self._max_pooling_exclude_stopwords(hidden_state, attention_mask, input_ids)
              
-            case "AVG-NS-NOSTOP":
+            case "AVG-NS-NEW":
                 return self._mean_pooling_exclude_cls_sep_and_stopwords(hidden_state, attention_mask, input_ids)
              
-            case "SUM-NS-NOSTOP":
+            case "SUM-NS-NEW":
                 return self._sum_pooling_exclude_cls_sep_and_stopwords(hidden_state, attention_mask, input_ids)
              
-            case "MAX-NS-NOSTOP":
+            case "MAX-NS-NEW":
                 return self._max_pooling_exclude_cls_sep_and_stopwords(hidden_state, attention_mask, input_ids)
         
 
