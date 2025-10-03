@@ -23,6 +23,28 @@ def get_agg_base():
     
     return list_sum_agg, list_avg_agg
 
+def get_agg_large():
+    list_sum_agg = []
+    list_avg_agg = []
+
+    ranges = list(range(1, 25))
+
+    slices = {}
+    for size in range(2, 25):  # De 2 até 12
+        slices[size] = [f"SUM-{group[0]}-{group[-1]}" for group in (ranges[i:i+size] for i in range(len(ranges) - size + 1))]
+
+    for size, groups in slices.items():
+        list_sum_agg+=groups
+
+    slices = {}
+    for size in range(2, 25):  # De 2 até 12
+        slices[size] = [f"AVG-{group[0]}-{group[-1]}" for group in (ranges[i:i+size] for i in range(len(ranges) - size + 1))]
+
+    for size, groups in slices.items():
+        list_avg_agg+=groups
+    
+    return list_sum_agg, list_avg_agg
+
 def get_pooling_techniques(poolings_args, name_agg):
 
     simple_ns_poolings = ['AVG-NS', 'SUM-NS', 'MAX-NS'] 
@@ -49,6 +71,9 @@ def get_pooling_techniques(poolings_args, name_agg):
     
     if 'simple' in poolings_args:
         pooling_prefixs += simple_poolings
+        #return pooling_prefixs
+    if 'simple_all' in poolings_args:
+        pooling_prefixs += all_poolings_individuals
         #return pooling_prefixs
     if 'simple-ns' in poolings_args:
         pooling_prefixs += simple_ns_poolings
@@ -77,7 +102,11 @@ def get_pooling_techniques(poolings_args, name_agg):
 
 def get_list_layers(final_layer, initial_layer, agg_layers_args):
 
-    list_lyrs_agg_sum, list_lyrs_agg_avg = get_agg_base()
+    if final_layer == 12:
+        list_lyrs_agg_sum, list_lyrs_agg_avg = get_agg_base()
+    if final_layer == 24:
+        list_lyrs_agg_sum, list_lyrs_agg_avg = get_agg_large()
+        
     list_lyrs_agg = list_lyrs_agg_sum + list_lyrs_agg_avg
 
     lyrs = []

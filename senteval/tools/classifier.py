@@ -70,6 +70,7 @@ class PyTorchClassifier(object):
 
         # Training
         while not stop_train and self.nepoch <= self.max_epoch:
+            #print('epoca: ', self.nepoch)
             self.trainepoch(trainX, trainy, epoch_size=self.epoch_size)
             accuracy = self.score(devX, devy)
             if accuracy > bestaccuracy:
@@ -78,8 +79,10 @@ class PyTorchClassifier(object):
             elif early_stop:
                 if early_stop_count >= self.tenacity:
                     stop_train = True
+                    #print('EARLY STOPPING parou na epoca: ', self.nepoch)
                 early_stop_count += 1
         self.model = bestmodel
+        #print('parou na epoca: ', self.nepoch)
         return bestaccuracy
 
     def trainepoch(self, X, y, epoch_size=1):

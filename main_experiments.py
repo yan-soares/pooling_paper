@@ -679,6 +679,7 @@ def main():
     parser.add_argument("--poolings", type=str, required=True, default="all", help="Poolings separados por virgula (sem espacos) ou simple, simple-ns, two, three")
     parser.add_argument("--agg_layers", type=str, required=True, default="ALL", help="agg layers separados por virgula (sem espacos)")
     parser.add_argument("--tasks", type=str, help="tasks separados por virgula (sem espacos)")
+    parser.add_argument("--save_dir", type=str, default='main_experiments_tables_journal', help="tasks separados por virgula (sem espacos)")
     args = parser.parse_args()
 
     task_type_args = args.task_type 
@@ -693,7 +694,7 @@ def main():
     poolings_args = args.poolings.split(",")
     agg_layers_args = args.agg_layers.split(",")  
 
-    main_path = '../pooling_paper_results/main_experiments_tables_new_paper'   
+    main_path = '../pooling_paper_results/' + str(args.save_dir) 
 
     initial_layer_args_print = args.initial_layer if args.initial_layer is not None else "default"
     final_layer_args_print = args.final_layer if args.final_layer is not None else "default"

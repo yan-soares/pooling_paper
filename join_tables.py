@@ -3,10 +3,10 @@ import math
 import os
 import shutil
 
-main_path_base = "../pooling_paper_results/google_drive_results/base"
+main_path_base = "../pooling_paper_results/google_drive_results/cl_more_epochs"
 main_path_large = "../pooling_paper_results/google_drive_results/large"
 
-cl_main_path = "../pooling_paper_results/tables_final_results/CL"
+cl_main_path = "../pooling_paper_results/tables_final_results/CL_more_epochs"
 destino_cl_acc = "../pooling_paper_results/FILES/cl_all_acc_files"
 destino_cl_devacc = "../pooling_paper_results/FILES/cl_all_devacc_files"
 

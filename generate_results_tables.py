@@ -3,14 +3,15 @@ import pandas as pd
 import os
 import shutil
 
-MAIN_PATH = "../pooling_paper_results/main_experiments_tables"
-FINAL_RESULTS_PATH_CL = '../pooling_paper_results/tables_final_results/CL'
+MAIN_PATH = "../pooling_paper_results/conversa_professor"
+FINAL_RESULTS_PATH_CL = '../pooling_paper_results/tables_final_results/CL_conversa_professor'
 FINAL_RESULTS_PATH_SI = '../pooling_paper_results/tables_final_results/SI'
 
 cl_paths = [p for p in os.listdir(MAIN_PATH) if p.startswith('cl_')]
 si_paths = [p for p in os.listdir(MAIN_PATH) if p.startswith('si_')]
 
 columns_tasks_cl = ['MR', 'CR', 'SUBJ', 'MPQA', 'SST2', 'TREC', 'MRPC']
+#columns_tasks_cl = ['SST5', 'SICKEntailment']
 columns_tasks_si = ['STS12', 'STS13', 'STS14', 'STS15', 'STS16', 'STSBenchmark', 'SICKRelatedness']
 
 main_colunas = ['model', 'pooling', 'type_pooling','agg', 'layer', 'epochs', 'out_vec_size', 'qtd_layers', 'nhid', 'params', 'best_layers']
